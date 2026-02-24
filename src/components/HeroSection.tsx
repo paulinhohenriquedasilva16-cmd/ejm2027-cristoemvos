@@ -80,7 +80,7 @@ const HeroSection = () => {
           className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-tight mb-6"
         >
           EJM 2027 –{" "}
-          <span className="gradient-text">Um Chamado ao Avivamento</span>
+          <span className="gradient-text">ENCHEI-VOS DO ESPIRITO SANTO</span>
         </motion.h1>
 
         <motion.p
@@ -89,7 +89,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="font-body text-lg md:text-xl text-primary-foreground/80 mb-4 italic max-w-2xl mx-auto"
         >
-          "Esforça-te."
+          "Efésios 5:18"
         </motion.p>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
