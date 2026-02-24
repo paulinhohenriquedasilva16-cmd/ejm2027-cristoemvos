@@ -7,10 +7,10 @@ const Footer = () => {
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-8">
           <div className="flex items-center gap-4">
-            <img src={logo} alt="EJM" className="w-10 h-10 invert brightness-200" />
+            <img src={logo} alt="EJM" className="w-8 h-8 md:w-10 md:h-10 invert brightness-200 object-contain" />
             <div>
-              <h4 className="font-display text-sm text-primary-foreground">EJM 2027</h4>
-              <p className="font-body text-xs text-primary-foreground/50">Encontro de Jovens da Mensagem</p>
+              <h4 className="font-display text-xs md:text-sm text-primary-foreground">EJM 2027</h4>
+              <p className="font-body text-[10px] md:text-xs text-primary-foreground/50">Encontro de Jovens da Mensagem</p>
             </div>
           </div>
 
