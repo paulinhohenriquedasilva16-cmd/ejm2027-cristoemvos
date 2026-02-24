@@ -107,7 +107,9 @@ const HeroSection = () => {
           className="mb-12"
         >
           <a
-            href="#inscricao"
+            href="https://eisme.com.br/evento/ejm2027"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block gradient-bg text-primary-foreground font-display text-sm md:text-base px-8 py-4 rounded-full animate-pulse-glow hover:scale-105 transition-transform"
           >
             Garantir minha vaga no 1º Lote

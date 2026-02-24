@@ -45,7 +45,9 @@ const PricingSection = () => {
           </p>
 
           <a
-            href="#"
+            href="https://eisme.com.br/evento/ejm2027"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block gradient-bg text-primary-foreground font-display text-sm md:text-base px-10 py-4 rounded-full hover:scale-105 transition-transform animate-pulse-glow mb-8"
           >
             Inscrever-se Agora

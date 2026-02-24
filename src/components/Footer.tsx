@@ -15,7 +15,7 @@ const Footer = () => {
           </div>
 
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary-foreground/50 hover:text-primary transition-colors">
+            <a href="https://www.instagram.com/cristo.emvos?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="text-primary-foreground/50 hover:text-primary transition-colors">
               <Instagram className="w-5 h-5" />
             </a>
             <a href="#" className="text-primary-foreground/50 hover:text-primary transition-colors">
