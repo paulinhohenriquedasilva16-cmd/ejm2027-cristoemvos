@@ -17,7 +17,7 @@ const AboutSection = () => {
           </h2>
           <p className="font-body text-muted-foreground text-base md:text-lg max-w-3xl mx-auto leading-relaxed">
             O EJM é mais do que um encontro — é um altar levantado para despertar a juventude. 
-            Um momento de avivamento genuíno onde jovens de todo o Brasil se reúnem em uma 
+            Idealizado pelo Pr. Alberi, o evento reúne jovens do mundo todo em uma 
             só fé, fundamentados na mensagem do Profeta William Marrion Branham.
           </p>
         </motion.div>
@@ -40,7 +40,7 @@ const AboutSection = () => {
               icon: Users,
               title: "Comunhão",
               description:
-                "Organizado pela Igreja Cristo em Vós, sob a liderança do Pr. Pedro Vitorino, fundada pelo Pr. Alberi.",
+                "Idealizado pelo Pr. Alberi, esta edição acontece em São Paulo sob a organização do Pr. Pedro Vitorino e da Igreja Cristo em Vós.",
             },
           ].map((item, i) => (
             <motion.div
