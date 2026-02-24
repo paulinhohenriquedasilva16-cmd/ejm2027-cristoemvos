@@ -70,7 +70,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img src={logo} alt="EJM Logo" className="w-24 md:w-32 mx-auto mb-8 invert brightness-200" />
+          <img src={logo} alt="EJM Logo" className="w-24 md:w-32 mx-auto mb-8" />
         </motion.div>
 
         <motion.h1
