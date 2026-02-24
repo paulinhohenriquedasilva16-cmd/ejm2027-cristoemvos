@@ -24,7 +24,7 @@ const IncludedSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {items.map((item, i) => (
             <motion.div
               key={item.title}
@@ -32,7 +32,7 @@ const IncludedSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="glass-card p-6 text-center"
+              className="glass-card p-4 sm:p-6 text-center"
             >
               <item.icon className="w-10 h-10 text-primary mx-auto mb-4" />
               <h3 className="font-display text-xs md:text-sm text-primary-foreground mb-2">{item.title}</h3>

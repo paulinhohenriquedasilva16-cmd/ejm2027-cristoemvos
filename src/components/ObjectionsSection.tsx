@@ -20,14 +20,14 @@ const ObjectionsSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {/* Hospedagem */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="rounded-2xl bg-muted p-8"
+            className="rounded-2xl bg-muted p-6 md:p-8"
             style={{ boxShadow: "var(--shadow-card)" }}
           >
             <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mb-5">
@@ -53,7 +53,7 @@ const ObjectionsSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="rounded-2xl bg-muted p-8"
+            className="rounded-2xl bg-muted p-6 md:p-8"
             style={{ boxShadow: "var(--shadow-card)" }}
           >
             <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center mb-5">

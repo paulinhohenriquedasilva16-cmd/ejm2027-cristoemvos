@@ -10,7 +10,7 @@ const AboutSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
           <h2 className="font-display text-2xl md:text-4xl text-foreground mb-6">
             Sobre o <span className="gradient-text">Evento</span>
@@ -22,7 +22,7 @@ const AboutSection = () => {
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {[
             {
               icon: Flame,
@@ -49,7 +49,7 @@ const AboutSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="rounded-2xl bg-muted p-8 text-center hover:shadow-lg transition-shadow"
+              className="rounded-2xl bg-muted p-6 md:p-8 text-center hover:shadow-lg transition-shadow"
               style={{ boxShadow: "var(--shadow-card)" }}
             >
               <div className="w-14 h-14 rounded-xl gradient-bg flex items-center justify-center mx-auto mb-5">
