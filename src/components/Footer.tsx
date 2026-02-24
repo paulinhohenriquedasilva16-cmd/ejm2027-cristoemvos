@@ -1,0 +1,43 @@
+import { Instagram, Phone, Mail } from "lucide-react";
+import logo from "@/assets/logo-ejm.png";
+
+const Footer = () => {
+  return (
+    <footer className="bg-graphite section-padding pb-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-8">
+          <div className="flex items-center gap-4">
+            <img src={logo} alt="EJM" className="w-10 h-10 invert brightness-200" />
+            <div>
+              <h4 className="font-display text-sm text-primary-foreground">EJM 2027</h4>
+              <p className="font-body text-xs text-primary-foreground/50">Encontro de Jovens da Mensagem</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <a href="#" className="text-primary-foreground/50 hover:text-primary transition-colors">
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a href="#" className="text-primary-foreground/50 hover:text-primary transition-colors">
+              <Phone className="w-5 h-5" />
+            </a>
+            <a href="#" className="text-primary-foreground/50 hover:text-primary transition-colors">
+              <Mail className="w-5 h-5" />
+            </a>
+          </div>
+        </div>
+
+        <div className="border-t border-primary-foreground/10 pt-6 text-center">
+          <p className="font-body text-xs text-primary-foreground/40">
+            Igreja Cristo em Vós · Pr. Pedro Vitorino · Fundada pelo Pr. Alberi
+          </p>
+          <p className="font-body text-xs text-primary-foreground/30 mt-2">
+            © 2027 EJM – Todos os direitos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
