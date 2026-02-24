@@ -23,6 +23,11 @@ const faqs = [
       "O valor do primeiro lote está por R$ 599,99.\n\n⚠️ Importante: os lotes são limitados e o valor tende a subir nas próximas fases.",
   },
   {
+    question: "Crianças pagam ingresso?",
+    answer:
+      "👶 Crianças de 0 a 4 anos: entrada gratuita (não pagam).\n\n👧 Crianças de 5 a 10 anos: pagam 60% do valor do pacote.\n\n🧑 A partir de 11 anos: valor normal do ingresso.",
+  },
+  {
     question: "O ingresso inclui hospedagem?",
     answer:
       "A hospedagem pode variar conforme o modelo de inscrição. Recomendamos verificar no momento da compra ou nas informações oficiais do evento. O local possui estrutura para acomodação, garantindo conforto e segurança.",
