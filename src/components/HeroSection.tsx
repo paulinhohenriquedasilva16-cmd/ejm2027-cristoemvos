@@ -131,7 +131,7 @@ const HeroSection = () => {
           transition={{ delay: 1.2 }}
           className="text-primary-foreground/50 text-sm mt-4 font-body"
         >
-          15 de Janeiro de 2027 · Sumaré, SP
+          15 a 17 de Janeiro de 2027 • Estância Árvore da Vida
         </motion.p>
       </div>
     </section>
