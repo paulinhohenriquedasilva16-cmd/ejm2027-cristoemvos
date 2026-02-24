@@ -38,13 +38,13 @@ const CountdownTimer = () => {
   ];
 
   return (
-    <div className="flex gap-3 md:gap-5">
+    <div className="flex gap-2 sm:gap-3 md:gap-5">
       {units.map((unit) => (
-        <div key={unit.label} className="glass-card px-4 py-3 md:px-6 md:py-4 text-center min-w-[70px] md:min-w-[90px]">
-          <span className="block font-display text-2xl md:text-4xl text-primary-foreground">
+        <div key={unit.label} className="glass-card px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-4 text-center min-w-[60px] sm:min-w-[70px] md:min-w-[90px]">
+          <span className="block font-display text-xl sm:text-2xl md:text-4xl text-primary-foreground">
             {String(unit.value).padStart(2, "0")}
           </span>
-          <span className="block text-xs md:text-sm text-primary-foreground/70 font-body mt-1 uppercase tracking-wider">
+          <span className="block text-[10px] sm:text-xs md:text-sm text-primary-foreground/70 font-body mt-1 uppercase tracking-wider">
             {unit.label}
           </span>
         </div>
@@ -70,14 +70,14 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <img src={logo} alt="EJM Logo" className="w-24 md:w-32 mx-auto mb-8" />
+          <img src={logo} alt="EJM Logo" className="w-16 sm:w-24 md:w-32 mx-auto mb-6 md:mb-8" />
         </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="font-display text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-tight mb-6"
+          className="font-display text-xl sm:text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-tight mb-4 md:mb-6"
         >
           EJM 2027 –{" "}
           <span className="gradient-text">ENCHEI-VOS DO ESPIRITO SANTO</span>
@@ -87,7 +87,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="font-body text-lg md:text-xl text-primary-foreground/80 mb-4 italic max-w-2xl mx-auto"
+          className="font-body text-base md:text-xl text-primary-foreground/80 mb-3 md:mb-4 italic max-w-2xl mx-auto"
         >
           "Efésios 5:18"
         </motion.p>
@@ -95,7 +95,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="font-body text-base md:text-lg text-primary-foreground/70 mb-10 max-w-2xl mx-auto"
+          className="font-body text-sm md:text-lg text-primary-foreground/70 mb-8 md:mb-10 max-w-2xl mx-auto"
         >
           O encontro que marcará sua história espiritual.
         </motion.p>
@@ -104,13 +104,13 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
           <a
             href="https://eisme.com.br/evento/ejm2027"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block gradient-bg text-primary-foreground font-display text-sm md:text-base px-8 py-4 rounded-full animate-pulse-glow hover:scale-105 transition-transform"
+            className="inline-block gradient-bg text-primary-foreground font-display text-xs sm:text-sm md:text-base px-6 py-3 sm:px-8 sm:py-4 rounded-full animate-pulse-glow hover:scale-105 transition-transform"
           >
             Garantir minha vaga no 1º Lote
           </a>

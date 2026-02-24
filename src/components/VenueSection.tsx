@@ -35,7 +35,7 @@ const VenueSection = () => {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
             {[
               { icon: TreePine, title: "Natureza", desc: "Áreas verdes, trilhas e muito contato com a criação." },
               { icon: Waves, title: "Tranquilidade", desc: "Lagos e jardins que inspiram reflexão e oração." },
