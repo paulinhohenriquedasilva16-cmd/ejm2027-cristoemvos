@@ -29,7 +29,7 @@ const Footer = () => {
 
         <div className="border-t border-primary-foreground/10 pt-6 text-center">
           <p className="font-body text-xs text-primary-foreground/40">
-            Igreja Cristo em Vós · Pr. Pedro Vitorino · Fundada pelo Pr. Alberi
+            Idealizado pelo Pr. Alberi · Organização: Pr. Pedro Vitorino · Igreja Cristo em Vós
           </p>
           <p className="font-body text-xs text-primary-foreground/30 mt-2">
             © 2027 EJM – Todos os direitos reservados.
