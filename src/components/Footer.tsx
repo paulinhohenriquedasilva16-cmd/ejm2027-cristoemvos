@@ -32,7 +32,7 @@ const Footer = () => {
             Idealizado pelo Pr. Alberi · Organização: Pr. Pedro Vitorino · Igreja Cristo em Vós
           </p>
           <p className="font-body text-xs text-primary-foreground/30 mt-2">
-            © 2027 EJM – Todos os direitos reservados.
+            © 2027 Igreja Cristo em Vós – Todos os direitos reservados.
           </p>
         </div>
       </div>
