@@ -10,7 +10,7 @@ const faqs = [
   {
     question: "Onde será realizado o evento?",
     answer:
-      "O EJM 2027 acontecerá na Estância Árvore da Vida, em Sumaré (SP), um local preparado para receber grandes eventos cristãos, com estrutura completa, conforto e ambiente espiritual ideal.",
+      "O EJM 2027 acontecerá na Estância Árvore da Vida, um local preparado para receber grandes eventos cristãos, com estrutura completa, conforto e ambiente espiritual ideal.",
   },
   {
     question: "Quando acontece o EJM 2027?",
