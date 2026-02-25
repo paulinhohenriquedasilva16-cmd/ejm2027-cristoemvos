@@ -26,7 +26,7 @@ const VenueSection = () => {
             <div className="flex items-center justify-center gap-2 mb-6">
               <MapPin className="w-5 h-5 text-primary" />
               <span className="font-body text-primary-foreground/80 text-lg">
-                Estância Árvore da Vida · Sumaré, SP
+                Estância Árvore da Vida
               </span>
             </div>
             <p className="font-body text-primary-foreground/70 max-w-2xl mx-auto leading-relaxed">

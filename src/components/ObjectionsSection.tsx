@@ -62,7 +62,7 @@ const ObjectionsSection = () => {
             <h3 className="font-display text-lg text-foreground mb-3">Translado Assistido</h3>
             <p className="font-body text-muted-foreground text-sm leading-relaxed mb-4">
               Vem de aeroporto? Fique tranquilo! A organização entrará em contato 
-              para auxiliar e oferecer o serviço de translado até Sumaré.
+              para auxiliar e oferecer o serviço de translado até a Estância Árvore da Vida.
             </p>
             <div className="flex items-start gap-2 rounded-lg bg-background p-3">
               <Info className="w-4 h-4 text-primary mt-0.5 shrink-0" />
