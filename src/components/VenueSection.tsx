@@ -65,7 +65,7 @@ const VenueSection = () => {
             </h3>
             <div className="aspect-video max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3676.5!2d-47.27!3d-22.82!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zEstr.+Est%C3%A2ncia+%C3%81rvore+da+Vida%2C+01+-+Sumar%C3%A9+-+SP%2C+13176-050!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1838.2!2d-47.2633!3d-22.8205!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8959c1fa9c16d%3A0x8e5a0f5c7b8d9e2a!2sEst%C3%A2ncia+%C3%81rvore+da+Vida!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
                 title="Mapa - Estância Árvore da Vida"
                 allowFullScreen
                 loading="lazy"
