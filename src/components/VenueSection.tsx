@@ -53,38 +53,6 @@ const VenueSection = () => {
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mb-10 md:mb-12"
-          >
-            <h3 className="font-display text-lg md:text-xl text-primary-foreground text-center mb-4">
-              Como Chegar
-            </h3>
-            <div className="aspect-video max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-lg">
-              <iframe
-                src="https://maps.google.com/maps?q=Estr.+Est%C3%A2ncia+%C3%81rvore+da+Vida,+01+-+Est%C3%A2ncia+%C3%81rvore+da+Vida,+Sumar%C3%A9+-+SP,+13176-050&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                title="Mapa - Estância Árvore da Vida"
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="w-full h-full border-0"
-              />
-            </div>
-            <div className="text-center mt-4">
-              <a
-                href="https://www.google.com/maps/dir/?api=1&destination=Estr.+Est%C3%A2ncia+%C3%81rvore+da+Vida,+01+-+Est%C3%A2ncia+%C3%81rvore+da+Vida,+Sumar%C3%A9+-+SP,+13176-050"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-body text-primary hover:text-primary/80 transition-colors text-sm underline underline-offset-4"
-              >
-                <MapPin className="w-4 h-4" />
-                Abrir no Google Maps
-              </a>
-            </div>
-          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-10 md:mb-12">
             {[
