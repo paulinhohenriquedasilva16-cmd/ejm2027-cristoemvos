@@ -1,4 +1,5 @@
 import HeroSection from "@/components/HeroSection";
+import LoteBanner from "@/components/LoteBanner";
 import AboutSection from "@/components/AboutSection";
 import VenueSection from "@/components/VenueSection";
 import ObjectionsSection from "@/components/ObjectionsSection";
@@ -11,6 +12,7 @@ import Footer from "@/components/Footer";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <LoteBanner />
       <HeroSection />
       <AboutSection />
       <VenueSection />
