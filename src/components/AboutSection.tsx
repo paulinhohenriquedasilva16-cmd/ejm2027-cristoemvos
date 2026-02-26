@@ -83,9 +83,9 @@ const AboutSection = () => {
             <div className="aspect-video rounded-xl overflow-hidden bg-muted">
               {/* Substituir pelo ID do vídeo real */}
               <iframe
-                src="https://www.youtube.com/embed/VIDEO_ID_AQUI"
+                src="https://player.vimeo.com/video/1168598567"
                 title="EJMs Anteriores - Como Deus se fez presente"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
               />
