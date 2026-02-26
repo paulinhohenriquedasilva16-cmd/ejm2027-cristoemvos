@@ -15,6 +15,11 @@ import alojJImg1 from "@/assets/alojamento-j-1.jpg";
 import alojJImg2 from "@/assets/alojamento-j-2.jpg";
 import alojJImg3 from "@/assets/alojamento-j-3.jpg";
 import alojJImg4 from "@/assets/alojamento-j-4.jpg";
+import blocoCImg1 from "@/assets/alojamento-blocoC-1.jpg";
+import blocoCImg2 from "@/assets/alojamento-blocoC-2.jpg";
+import blocoCImg3 from "@/assets/alojamento-blocoC-3.jpg";
+import blocoCImg4 from "@/assets/alojamento-blocoC-4.jpg";
+import blocoCImg5 from "@/assets/alojamento-blocoC-5.jpg";
 
 interface Accommodation {
   name: string;
@@ -64,7 +69,7 @@ const included: Accommodation[] = [
   {
     name: "Alojamento Bloco C",
     tag: "Inclusa no ingresso",
-    images: ["https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=500&fit=crop"],
+    images: [blocoCImg1, blocoCImg2, blocoCImg3, blocoCImg4, blocoCImg5],
     description: "Alojamento coletivo no Bloco C com fácil acesso ao evento.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
