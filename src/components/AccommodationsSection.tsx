@@ -9,6 +9,8 @@ import jundiaiImg4 from "@/assets/alojamento-jundiai-4.jpg";
 import jundiaiImg5 from "@/assets/alojamento-jundiai-5.jpg";
 import jundiaiImg6 from "@/assets/alojamento-jundiai-6.jpg";
 import jundiaiImg7 from "@/assets/alojamento-jundiai-7.jpg";
+import blocoAImg1 from "@/assets/alojamento-blocoA-1.jpg";
+import blocoAImg2 from "@/assets/alojamento-blocoA-2.jpg";
 
 interface Accommodation {
   name: string;
@@ -34,7 +36,7 @@ const included: Accommodation[] = [
   {
     name: "Alojamento Bloco A",
     tag: "Inclusa no ingresso",
-    images: ["https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&h=500&fit=crop"],
+    images: [blocoAImg1, blocoAImg2],
     description: "Alojamento coletivo no Bloco A com infraestrutura completa.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
