@@ -37,7 +37,7 @@ import mapleImg7 from "@/assets/hotel-maple-7.jpg";
 
 interface Accommodation {
   name: string;
-  tag: "Inclusa no ingresso" | "Upgrade";
+  tag: "Inclusa no ingresso" | "Privativo · Custo adicional";
   images: string[];
   description: string;
   amenities: { icon: typeof Bed; label: string }[];
@@ -97,7 +97,7 @@ const included: Accommodation[] = [
 const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.A",
-    tag: "Upgrade",
+    tag: "Privativo · Custo adicional",
     images: [aptoCHAImg1, aptoCHAImg2, aptoCHAImg3],
     description: "Apartamento privativo com conforto superior para você e sua família.",
     amenities: [
@@ -109,7 +109,7 @@ const upgrades: Accommodation[] = [
   },
   {
     name: "Apartamento Ouro – CH.C",
-    tag: "Upgrade",
+    tag: "Privativo · Custo adicional",
     images: [aptoCHCImg1, aptoCHCImg2, aptoCHCImg3, aptoCHCImg4],
     description: "Apartamento privativo no bloco C com estrutura completa.",
     amenities: [
@@ -121,7 +121,7 @@ const upgrades: Accommodation[] = [
   },
   {
     name: "Hotel Maple Village",
-    tag: "Upgrade",
+    tag: "Privativo · Custo adicional",
     images: [mapleImg1, mapleImg2, mapleImg3, mapleImg4, mapleImg5, mapleImg6, mapleImg7],
     description: "Hospedagem premium no Hotel Maple Village com serviço completo.",
     amenities: [
@@ -240,7 +240,7 @@ const AccCarousel = ({
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
             <span
               className={`absolute top-2.5 left-2.5 text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full ${
-                acc.tag === "Upgrade"
+                acc.tag === "Privativo · Custo adicional"
                   ? "bg-secondary text-secondary-foreground"
                   : "bg-primary text-primary-foreground"
               }`}
@@ -304,7 +304,7 @@ const AccommodationsSection = () => {
           className="mb-10"
         >
           <h3 className="font-display text-sm md:text-base text-foreground mb-4">
-            Upgrades
+            Quartos Privativos · Custo adicional
           </h3>
           <AccCarousel items={upgrades} onSelect={setSelected} />
         </motion.div>
@@ -341,7 +341,7 @@ const AccommodationsSection = () => {
                 <div className="p-5 md:p-6">
                   <span
                     className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3 ${
-                      selected.tag === "Upgrade"
+                      selected.tag === "Privativo · Custo adicional"
                         ? "bg-secondary/20 text-secondary"
                         : "bg-primary/20 text-primary"
                     }`}
@@ -381,7 +381,7 @@ const AccommodationsSection = () => {
           style={{ boxShadow: "var(--shadow-card)" }}
         >
           <p className="font-body text-muted-foreground text-sm md:text-base leading-relaxed mb-5">
-            Ficou em dúvida sobre o <strong className="text-foreground">upgrade de acomodação</strong>? Consulte os valores no checkout ou fale com o nosso suporte.
+            Ficou em dúvida sobre os <strong className="text-foreground">quartos privativos</strong>? Consulte os valores no checkout ou fale com o nosso suporte.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <a
