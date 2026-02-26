@@ -25,7 +25,7 @@ const faqs = [
   {
     question: "Crianças pagam ingresso?",
     answer:
-      "👶 Crianças de 0 a 4 anos: entrada gratuita (não pagam).\n\n👧 Crianças de 5 a 10 anos: pagam 60% do valor do pacote.\n\n🧑 A partir de 11 anos: valor normal do ingresso.",
+      "👶 Crianças de 0 a 4 anos: não pagam!\n\n👧 Crianças de 5 a 10 anos: pagam apenas uma taxa reduzida para cobrir alimentação e estadia.\n\n🧑 A partir de 11 anos: valor normal do ingresso.\n\n📲 Entre em contato com nossa equipe no WhatsApp antes de finalizar a compra para receber os detalhes e liberar seu cupom de desconto!",
   },
   {
     question: "O ingresso inclui hospedagem?",
