@@ -1,14 +1,34 @@
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Bed, Droplets, Wifi, Users, ShieldCheck, Lamp } from "lucide-react";
 
-const alojamento = {
-  slug: "alojamentos",
-  name: "Alojamentos",
-  desc: "Opção coletiva inclusa na inscrição, com estrutura organizada e ambiente comunitário.",
-  image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&h=400&fit=crop",
-};
+const images = [
+  "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=500&fit=crop",
+  "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&h=500&fit=crop",
+  "https://images.unsplash.com/photo-1590490359683-658d3d23f972?w=800&h=500&fit=crop",
+];
+
+const amenities = [
+  { icon: Bed, label: "Camas confortáveis" },
+  { icon: Droplets, label: "Banheiros compartilhados" },
+  { icon: Wifi, label: "Wi-Fi disponível" },
+  { icon: Users, label: "Ambiente comunitário" },
+  { icon: ShieldCheck, label: "Segurança 24h" },
+  { icon: Lamp, label: "Iluminação individual" },
+];
 
 const AccommodationsSection = () => {
+  const [current, setCurrent] = useState(0);
+
+  const next = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % images.length);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(next, 3500);
+    return () => clearInterval(interval);
+  }, [next]);
+
   return (
     <section id="acomodacoes" className="section-padding bg-background">
       <div className="max-w-4xl mx-auto">
@@ -32,24 +52,49 @@ const AccommodationsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="group rounded-2xl overflow-hidden bg-muted max-w-2xl mx-auto"
-          style={{ boxShadow: "var(--shadow-card)" }}
+          className="max-w-lg mx-auto"
         >
-          <div className="aspect-[3/2] overflow-hidden">
-            <img
-              src={alojamento.image}
-              alt={alojamento.name}
-              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
+          {/* Carousel */}
+          <div
+            className="relative rounded-2xl overflow-hidden aspect-[4/3]"
+            style={{ boxShadow: "var(--shadow-card)" }}
+          >
+            {images.map((img, i) => (
+              <img
+                key={i}
+                src={img}
+                alt={`Alojamento - foto ${i + 1}`}
+                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                style={{ opacity: i === current ? 1 : 0 }}
+                loading="lazy"
+              />
+            ))}
+            {/* Dots */}
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    i === current ? "bg-primary-foreground w-5" : "bg-primary-foreground/50"
+                  }`}
+                  aria-label={`Ir para foto ${i + 1}`}
+                />
+              ))}
+            </div>
           </div>
-          <div className="p-5 text-center">
-            <h3 className="font-display text-sm md:text-base text-foreground mb-2">
-              {alojamento.name}
-            </h3>
-            <p className="font-body text-muted-foreground text-sm leading-relaxed">
-              {alojamento.desc}
-            </p>
+
+          {/* Amenities */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
+            {amenities.map((a) => (
+              <div
+                key={a.label}
+                className="flex items-center gap-2.5 rounded-xl bg-muted p-3"
+              >
+                <a.icon className="w-4 h-4 text-primary shrink-0" />
+                <span className="font-body text-xs sm:text-sm text-foreground">{a.label}</span>
+              </div>
+            ))}
           </div>
         </motion.div>
 
@@ -79,5 +124,4 @@ const AccommodationsSection = () => {
   );
 };
 
-export { alojamento };
 export default AccommodationsSection;
