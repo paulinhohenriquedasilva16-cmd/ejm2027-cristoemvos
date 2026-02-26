@@ -77,6 +77,9 @@ const AboutSection = () => {
                 Reviva os EJMs Anteriores
               </h3>
             </div>
+            <p className="font-body text-muted-foreground text-xs md:text-sm mb-3 leading-relaxed">
+              Veja como Deus se fez presente nas edições passadas e como Ele se fará presente em 2027!
+            </p>
             <div className="aspect-video rounded-xl overflow-hidden bg-muted">
               <iframe
                 src="https://player.vimeo.com/video/1168598567?title=0&byline=0&portrait=0&sidedock=0"
