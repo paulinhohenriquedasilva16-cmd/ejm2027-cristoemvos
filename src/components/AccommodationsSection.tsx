@@ -24,6 +24,9 @@ import aptoCHCImg1 from "@/assets/apto-ouro-chc-1.jpg";
 import aptoCHCImg2 from "@/assets/apto-ouro-chc-2.png";
 import aptoCHCImg3 from "@/assets/apto-ouro-chc-3.jpg";
 import aptoCHCImg4 from "@/assets/apto-ouro-chc-4.jpg";
+import aptoCHAImg1 from "@/assets/apto-ouro-cha-1.jpg";
+import aptoCHAImg2 from "@/assets/apto-ouro-cha-2.jpg";
+import aptoCHAImg3 from "@/assets/apto-ouro-cha-3.jpg";
 import mapleImg1 from "@/assets/hotel-maple-1.jpg";
 import mapleImg2 from "@/assets/hotel-maple-2.jpg";
 import mapleImg3 from "@/assets/hotel-maple-3.jpg";
@@ -95,7 +98,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.A",
     tag: "Upgrade",
-    images: ["https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&h=500&fit=crop"],
+    images: [aptoCHAImg1, aptoCHAImg2, aptoCHAImg3],
     description: "Apartamento privativo com conforto superior para você e sua família.",
     amenities: [
       { icon: Bed, label: "Cama de casal" },
