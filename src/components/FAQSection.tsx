@@ -43,9 +43,9 @@ const faqs = [
       "Sim! Você pode ir com veículo próprio. A Estância Árvore da Vida possui acesso facilitado e estrutura para receber participantes.",
   },
   {
-    question: "O evento inclui alimentação?",
+    question: "Alimentação inclusa no valor do ingresso?",
     answer:
-      "A alimentação pode estar inclusa dependendo do pacote. Caso não esteja, o local conta com estrutura adequada para refeições.",
+      "Sim! A alimentação está inclusa no valor do ingresso.",
   },
   {
     question: "Quem pode participar?",
