@@ -30,7 +30,7 @@ const faqs = [
   {
     question: "O ingresso inclui hospedagem?",
     answer:
-      "A hospedagem pode variar conforme o modelo de inscrição. Recomendamos verificar no momento da compra ou nas informações oficiais do evento. O local possui estrutura para acomodação, garantindo conforto e segurança.",
+      "Sim! O ingresso inclui hospedagem dentro dos alojamentos compartilhados. Também oferecemos quartos no padrão hotel com custo adicional, caso você queira mais privacidade.",
   },
   {
     question: "Como funciona o translado do aeroporto?",
