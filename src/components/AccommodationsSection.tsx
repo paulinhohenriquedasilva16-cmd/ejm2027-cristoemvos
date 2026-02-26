@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Bed, Droplets, Wifi, Users, ShieldCheck, Lamp, X, Star } from "lucide-react";
+import { MessageCircle, Bed, Droplets, Wifi, Users, ShieldCheck, Lamp, X, Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 
 interface Accommodation {
   name: string;
@@ -10,7 +10,7 @@ interface Accommodation {
   amenities: { icon: typeof Bed; label: string }[];
 }
 
-const accommodations: Accommodation[] = [
+const included: Accommodation[] = [
   {
     name: "Alojamento Jundiaí",
     tag: "Inclusa no ingresso",
@@ -59,6 +59,9 @@ const accommodations: Accommodation[] = [
       { icon: ShieldCheck, label: "Segurança 24h" },
     ],
   },
+];
+
+const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.A",
     tag: "Upgrade",
@@ -97,8 +100,82 @@ const accommodations: Accommodation[] = [
   },
 ];
 
+/* ── Horizontal scroll carousel ── */
+const AccCarousel = ({
+  items,
+  onSelect,
+}: {
+  items: Accommodation[];
+  onSelect: (acc: Accommodation) => void;
+}) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const scroll = (dir: number) => {
+    if (!ref.current) return;
+    ref.current.scrollBy({ left: dir * 260, behavior: "smooth" });
+  };
+
+  return (
+    <div className="relative group/carousel">
+      {/* Arrows */}
+      <button
+        onClick={() => scroll(-1)}
+        className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity shadow-md"
+        aria-label="Anterior"
+      >
+        <ChevronLeft className="w-4 h-4 text-foreground" />
+      </button>
+      <button
+        onClick={() => scroll(1)}
+        className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity shadow-md"
+        aria-label="Próximo"
+      >
+        <ChevronRight className="w-4 h-4 text-foreground" />
+      </button>
+
+      <div
+        ref={ref}
+        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 -mx-1 px-1"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {items.map((acc) => (
+          <button
+            key={acc.name}
+            onClick={() => onSelect(acc)}
+            className="group relative flex-none w-52 sm:w-60 rounded-2xl overflow-hidden aspect-[3/4] text-left snap-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            style={{ boxShadow: "var(--shadow-card)" }}
+          >
+            <img
+              src={acc.image}
+              alt={acc.name}
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            <span
+              className={`absolute top-2.5 left-2.5 text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full ${
+                acc.tag === "Upgrade"
+                  ? "bg-secondary text-secondary-foreground"
+                  : "bg-primary text-primary-foreground"
+              }`}
+            >
+              {acc.tag}
+            </span>
+            <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
+              <h3 className="font-display text-xs sm:text-sm text-white leading-tight">
+                {acc.name}
+              </h3>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── Main section ── */
 const AccommodationsSection = () => {
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<Accommodation | null>(null);
 
   return (
     <section id="acomodacoes" className="section-padding bg-background">
@@ -111,57 +188,44 @@ const AccommodationsSection = () => {
           className="text-center mb-12"
         >
           <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4">
-            Nosso <span className="gradient-text">Alojamento</span>
+            Nossas <span className="gradient-text">Acomodações</span>
           </h2>
           <p className="font-body text-muted-foreground max-w-xl mx-auto">
             Clique em uma acomodação para ver os detalhes.
           </p>
         </motion.div>
 
-        {/* Cards grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-          {accommodations.map((acc, i) => (
-            <motion.button
-              key={acc.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-              onClick={() => setSelected(i)}
-              className="group relative rounded-2xl overflow-hidden aspect-[3/4] text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              style={{ boxShadow: "var(--shadow-card)" }}
-            >
-              <img
-                src={acc.image}
-                alt={acc.name}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                loading="lazy"
-              />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              {/* Tag */}
-              <span
-                className={`absolute top-2.5 left-2.5 text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full ${
-                  acc.tag === "Upgrade"
-                    ? "bg-secondary text-secondary-foreground"
-                    : "bg-primary text-primary-foreground"
-                }`}
-              >
-                {acc.tag}
-              </span>
-              {/* Name */}
-              <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
-                <h3 className="font-display text-xs sm:text-sm text-white leading-tight">
-                  {acc.name}
-                </h3>
-              </div>
-            </motion.button>
-          ))}
-        </div>
+        {/* Included carousel */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-10"
+        >
+          <h3 className="font-display text-sm md:text-base text-foreground mb-4">
+            Inclusas no ingresso
+          </h3>
+          <AccCarousel items={included} onSelect={setSelected} />
+        </motion.div>
+
+        {/* Upgrade carousel */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-10"
+        >
+          <h3 className="font-display text-sm md:text-base text-foreground mb-4">
+            Upgrades
+          </h3>
+          <AccCarousel items={upgrades} onSelect={setSelected} />
+        </motion.div>
 
         {/* Detail modal */}
         <AnimatePresence>
-          {selected !== null && (
+          {selected && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -178,7 +242,6 @@ const AccommodationsSection = () => {
                 style={{ boxShadow: "var(--shadow-warm)" }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close */}
                 <button
                   onClick={() => setSelected(null)}
                   className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
@@ -186,37 +249,31 @@ const AccommodationsSection = () => {
                 >
                   <X className="w-4 h-4" />
                 </button>
-
-                {/* Image */}
                 <div className="aspect-video overflow-hidden">
                   <img
-                    src={accommodations[selected].image}
-                    alt={accommodations[selected].name}
+                    src={selected.image}
+                    alt={selected.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
-
-                {/* Content */}
                 <div className="p-5 md:p-6">
                   <span
                     className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3 ${
-                      accommodations[selected].tag === "Upgrade"
+                      selected.tag === "Upgrade"
                         ? "bg-secondary/20 text-secondary"
                         : "bg-primary/20 text-primary"
                     }`}
                   >
-                    {accommodations[selected].tag}
+                    {selected.tag}
                   </span>
                   <h3 className="font-display text-base md:text-lg text-foreground mb-2">
-                    {accommodations[selected].name}
+                    {selected.name}
                   </h3>
                   <p className="font-body text-muted-foreground text-sm mb-5">
-                    {accommodations[selected].description}
+                    {selected.description}
                   </p>
-
-                  {/* Amenities */}
                   <div className="grid grid-cols-2 gap-2.5">
-                    {accommodations[selected].amenities.map((a) => (
+                    {selected.amenities.map((a) => (
                       <div
                         key={a.label}
                         className="flex items-center gap-2 rounded-xl bg-muted p-2.5"
@@ -242,17 +299,28 @@ const AccommodationsSection = () => {
           style={{ boxShadow: "var(--shadow-card)" }}
         >
           <p className="font-body text-muted-foreground text-sm md:text-base leading-relaxed mb-5">
-            Caso queira ficar em um <strong className="text-foreground">quarto privativo com sua família</strong>, consulte os quartos e valores de upgrade no checkout, ou entre em contato com o nosso suporte.
+            Ficou em dúvida sobre o <strong className="text-foreground">upgrade de acomodação</strong>? Consulte os valores no checkout ou fale com o nosso suporte.
           </p>
-          <a
-            href="https://wa.me/5515997624048?text=Queria%20saber%20mais%20sobre%20as%20acomoda%C3%A7%C3%B5es%20em%20fam%C3%ADlia"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"
-          >
-            <MessageCircle className="w-4 h-4" />
-            Falar com o suporte
-          </a>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="https://eisme.com.br/evento/ejm2027"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"
+            >
+              <ExternalLink className="w-4 h-4" />
+              Ver no checkout
+            </a>
+            <a
+              href="https://wa.me/5515997624048?text=Queria%20saber%20mais%20sobre%20as%20acomoda%C3%A7%C3%B5es%20em%20fam%C3%ADlia"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 border-2 border-primary text-primary font-semibold px-6 py-3 rounded-full hover:bg-primary/10 transition-colors text-sm"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Falar com o suporte
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
