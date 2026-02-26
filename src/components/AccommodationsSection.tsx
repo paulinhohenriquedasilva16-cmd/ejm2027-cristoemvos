@@ -24,6 +24,13 @@ import aptoCHCImg1 from "@/assets/apto-ouro-chc-1.jpg";
 import aptoCHCImg2 from "@/assets/apto-ouro-chc-2.png";
 import aptoCHCImg3 from "@/assets/apto-ouro-chc-3.jpg";
 import aptoCHCImg4 from "@/assets/apto-ouro-chc-4.jpg";
+import mapleImg1 from "@/assets/hotel-maple-1.jpg";
+import mapleImg2 from "@/assets/hotel-maple-2.jpg";
+import mapleImg3 from "@/assets/hotel-maple-3.jpg";
+import mapleImg4 from "@/assets/hotel-maple-4.jpg";
+import mapleImg5 from "@/assets/hotel-maple-5.jpg";
+import mapleImg6 from "@/assets/hotel-maple-6.jpg";
+import mapleImg7 from "@/assets/hotel-maple-7.jpg";
 
 interface Accommodation {
   name: string;
@@ -112,7 +119,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Hotel Maple Village",
     tag: "Upgrade",
-    images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop"],
+    images: [mapleImg1, mapleImg2, mapleImg3, mapleImg4, mapleImg5, mapleImg6, mapleImg7],
     description: "Hospedagem premium no Hotel Maple Village com serviço completo.",
     amenities: [
       { icon: Bed, label: "Cama king size" },
