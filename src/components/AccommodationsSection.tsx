@@ -39,7 +39,7 @@ const included: Accommodation[] = [
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
       { icon: Droplets, label: "Banheiros compartilhados" },
-      { icon: Wifi, label: "Wi-Fi disponível" },
+      { icon: Users, label: "Ambiente comunitário" },
       { icon: ShieldCheck, label: "Segurança 24h" },
     ],
   },
@@ -63,7 +63,7 @@ const included: Accommodation[] = [
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
       { icon: Droplets, label: "Banheiros compartilhados" },
-      { icon: Wifi, label: "Wi-Fi disponível" },
+      { icon: Users, label: "Ambiente comunitário" },
       { icon: ShieldCheck, label: "Segurança 24h" },
     ],
   },
