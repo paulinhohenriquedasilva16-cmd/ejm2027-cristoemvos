@@ -73,7 +73,7 @@ const AboutSection = () => {
             <div className="absolute -top-px -left-px -right-px h-1 rounded-t-2xl gradient-bg" />
             <div className="aspect-video rounded-xl overflow-hidden bg-muted">
               <iframe
-                src="https://player.vimeo.com/video/1168598567"
+                src="https://player.vimeo.com/video/1168598567?title=0&byline=0&portrait=0&sidedock=0"
                 title="EJMs Anteriores - Como Deus se fez presente"
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
