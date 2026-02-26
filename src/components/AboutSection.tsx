@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Flame, BookOpen, Users, Play } from "lucide-react";
+import { Flame, BookOpen, Users } from "lucide-react";
 
 const AboutSection = () => {
   return (
@@ -71,17 +71,7 @@ const AboutSection = () => {
         >
           <div className="relative max-w-2xl mx-auto rounded-2xl overflow-hidden border-2 border-primary/20 bg-muted/50 p-3 md:p-4">
             <div className="absolute -top-px -left-px -right-px h-1 rounded-t-2xl gradient-bg" />
-            <div className="flex items-center gap-2 mb-3">
-              <Play className="w-4 h-4 text-primary" />
-              <h3 className="font-display text-sm md:text-base text-foreground">
-                Reviva os EJMs Anteriores
-              </h3>
-            </div>
-            <p className="font-body text-muted-foreground text-xs md:text-sm mb-3 leading-relaxed">
-              Veja como Deus se fez presente nas edições passadas e como Ele se fará presente em 2027!
-            </p>
             <div className="aspect-video rounded-xl overflow-hidden bg-muted">
-              {/* Substituir pelo ID do vídeo real */}
               <iframe
                 src="https://player.vimeo.com/video/1168598567"
                 title="EJMs Anteriores - Como Deus se fez presente"
