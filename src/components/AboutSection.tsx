@@ -82,9 +82,10 @@ const AboutSection = () => {
             </p>
             <div className="aspect-video rounded-xl overflow-hidden bg-muted">
               <iframe
-                src="https://player.vimeo.com/video/1168598567?title=0&byline=0&portrait=0&sidedock=0"
-                title="EJMs Anteriores - Como Deus se fez presente"
-                allow="autoplay; fullscreen; picture-in-picture"
+                src="https://player.vimeo.com/video/1168598567?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&muted=1"
+                title="EJM's 2025 e 2026"
+                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 className="w-full h-full"
               />
