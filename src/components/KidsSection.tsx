@@ -30,7 +30,7 @@ const KidsSection = () => {
           </p>
 
           <a
-            href="https://wa.me/5511999999999?text=Ol%C3%A1!%20Gostaria%20de%20saber%20sobre%20o%20ingresso%20infantil%20do%20EJM%202027"
+            href="https://wa.me/5515997624048?text=Ol%C3%A1!%20Gostaria%20de%20saber%20sobre%20o%20ingresso%20infantil%20do%20EJM%202027"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-display text-xs md:text-sm px-6 py-3 rounded-full hover:scale-105 transition-transform"
