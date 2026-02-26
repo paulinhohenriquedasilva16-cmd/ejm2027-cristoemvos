@@ -20,6 +20,10 @@ import blocoCImg2 from "@/assets/alojamento-blocoC-2.jpg";
 import blocoCImg3 from "@/assets/alojamento-blocoC-3.jpg";
 import blocoCImg4 from "@/assets/alojamento-blocoC-4.jpg";
 import blocoCImg5 from "@/assets/alojamento-blocoC-5.jpg";
+import aptoCHCImg1 from "@/assets/apto-ouro-chc-1.jpg";
+import aptoCHCImg2 from "@/assets/apto-ouro-chc-2.png";
+import aptoCHCImg3 from "@/assets/apto-ouro-chc-3.jpg";
+import aptoCHCImg4 from "@/assets/apto-ouro-chc-4.jpg";
 
 interface Accommodation {
   name: string;
@@ -96,7 +100,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.C",
     tag: "Upgrade",
-    images: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=500&fit=crop"],
+    images: [aptoCHCImg1, aptoCHCImg2, aptoCHCImg3, aptoCHCImg4],
     description: "Apartamento privativo no bloco C com estrutura completa.",
     amenities: [
       { icon: Bed, label: "Cama de casal" },
