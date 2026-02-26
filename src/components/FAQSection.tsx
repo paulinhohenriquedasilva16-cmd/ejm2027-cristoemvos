@@ -10,17 +10,17 @@ const faqs = [
   {
     question: "Onde será realizado o evento?",
     answer:
-      "O EJM 2027 acontecerá na Estância Árvore da Vida, um local preparado para receber grandes eventos cristãos, com estrutura completa, conforto e ambiente espiritual ideal.",
+      "O EJM 2027 acontecerá na Estância Árvore da Vida, um local preparado com muito carinho e dedicação para que você receba o melhor de Deus com todo o conforto.",
   },
   {
     question: "Quando acontece o EJM 2027?",
     answer:
-      "Nos dias 15, 16 e 17 de janeiro de 2027. Serão 3 dias intensos de transformação, comunhão e presença de Deus.",
+      "Nos dias 15, 16 e 17 de janeiro de 2027. Serão 3 dias de muitas bênçãos onde a sua única preocupação será ouvir a voz de Deus e viver momentos inesquecíveis na presença Dele.",
   },
   {
-    question: "Qual o valor do ingresso?",
+    question: "O que o meu Passaporte (R$ 599,99) inclui?",
     answer:
-      "O valor do primeiro lote está por R$ 599,99.\n\n⚠️ Importante: os lotes são limitados e o valor tende a subir nas próximas fases.",
+      "Transparência total! O valor de R$ 599,99 é o seu pacote padrão completo. Ele inclui:\n\n✅ Entrada nos 3 dias do encontro\n✅ Todas as 9 refeições\n✅ Sua cama no alojamento compartilhado\n\nVocê não paga absolutamente nada a mais por isso.\n\n⚠️ As vagas nas camas são limitadas. Quem compra primeiro, escolhe o quarto primeiro!",
   },
   {
     question: "Crianças pagam ingresso?",
@@ -30,7 +30,17 @@ const faqs = [
   {
     question: "O ingresso inclui hospedagem?",
     answer:
-      "Sim! O ingresso inclui hospedagem dentro dos alojamentos compartilhados. Também oferecemos quartos no padrão hotel com custo adicional, caso você queira mais privacidade.",
+      "Sim! O seu Passaporte já inclui hospedagem nos alojamentos compartilhados. Famílias e grupos podem se organizar para fechar quartos inteiros de beliches sem nenhuma taxa extra.\n\nPara casais ou famílias que preferem total privacidade, oferecemos opções de quartos de hotel (com a diária do quarto paga à parte no site). Você não precisa se preocupar em procurar hotel na cidade e ficar distante do local do EJM.",
+  },
+  {
+    question: "Posso escolher com quem vou dividir o quarto?",
+    answer:
+      "Sim! Quer ficar com a sua turma? No momento da inscrição, vocês podem escolher dormir no mesmo quarto do alojamento. E o melhor: é a chance perfeita para conhecer jovens de todos os lugares!",
+  },
+  {
+    question: "Alimentação inclusa no valor do ingresso?",
+    answer:
+      "Sim! Todas as 9 refeições do encontro estão inclusas no valor do seu Passaporte. Você não paga nada a mais por isso.",
   },
   {
     question: "Como funciona o translado do aeroporto?",
@@ -43,29 +53,29 @@ const faqs = [
       "Sim! Você pode ir com veículo próprio. A Estância Árvore da Vida possui acesso facilitado e estrutura para receber participantes.",
   },
   {
-    question: "Alimentação inclusa no valor do ingresso?",
-    answer:
-      "Sim! A alimentação está inclusa no valor do ingresso.",
-  },
-  {
     question: "Quem pode participar?",
     answer:
-      "O evento é voltado para jovens da mensagem, mas qualquer pessoa que deseje viver essa experiência espiritual é bem-vinda.",
+      "O EJM é feito para a juventude, mas é um espaço de braços abertos para a sua família! Qualquer pessoa que deseje viver essa experiência espiritual é bem-vinda.",
   },
   {
     question: "O que esperar do EJM 2027?",
     answer:
-      "Momentos intensos de presença de Deus, comunhão com jovens de diversas regiões, louvores, ministrações e experiências espirituais marcantes. Um ambiente que pode transformar sua vida.",
+      "Não é apenas um evento, é um divisor de águas. Momentos intensos de presença de Deus, comunhão com jovens de diversas regiões e experiências espirituais que vão marcar a sua história. O EJM é feito de irmãos para irmãos, sem fins lucrativos e com foco exclusivo em entrar na presença de Deus e se encher com o Espírito Santo.",
+  },
+  {
+    question: "Quais as formas de pagamento?",
+    answer:
+      "Para que ninguém fique de fora, você pode:\n\n💳 Parcelar no cartão de crédito direto pelo site\n💰 Pagamento à vista no Pix\n📄 Pagamento via Boleto",
   },
   {
     question: "E se eu estiver em dúvida se vale a pena?",
     answer:
-      "Se você sente que precisa de algo novo, de direção, de renovação espiritual… esse evento é pra você. Muitos chegam com dúvidas… e saem com a vida transformada.",
+      "Se você sente que precisa de algo novo, de direção, de renovação espiritual… esse evento é pra você. Responda ao chamado. Diga: \"Eis-me aqui\". Muitos chegam com dúvidas… e saem com a vida transformada.",
   },
   {
     question: "Como faço para garantir minha vaga?",
     answer:
-      "Basta realizar sua inscrição pelo site oficial. As vagas são limitadas e os lotes podem esgotar rapidamente. Não deixe pra depois — talvez você pague mais caro.",
+      "Basta realizar sua inscrição pelo site oficial. As vagas nas camas são limitadas — quem compra primeiro, escolhe o quarto primeiro! Não deixe pra depois.",
   },
 ];
 
