@@ -1,11 +1,19 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Bed, Droplets, Wifi, Users, ShieldCheck, Lamp, X, Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+
+import jundiaiImg1 from "@/assets/alojamento-jundiai-1.jpg";
+import jundiaiImg2 from "@/assets/alojamento-jundiai-2.jpg";
+import jundiaiImg3 from "@/assets/alojamento-jundiai-3.jpg";
+import jundiaiImg4 from "@/assets/alojamento-jundiai-4.jpg";
+import jundiaiImg5 from "@/assets/alojamento-jundiai-5.jpg";
+import jundiaiImg6 from "@/assets/alojamento-jundiai-6.jpg";
+import jundiaiImg7 from "@/assets/alojamento-jundiai-7.jpg";
 
 interface Accommodation {
   name: string;
   tag: "Inclusa no ingresso" | "Upgrade";
-  image: string;
+  images: string[];
   description: string;
   amenities: { icon: typeof Bed; label: string }[];
 }
@@ -14,7 +22,7 @@ const included: Accommodation[] = [
   {
     name: "Alojamento Jundiaí",
     tag: "Inclusa no ingresso",
-    image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=800&h=500&fit=crop",
+    images: [jundiaiImg1, jundiaiImg2, jundiaiImg3, jundiaiImg4, jundiaiImg5, jundiaiImg6, jundiaiImg7],
     description: "Alojamento coletivo com estrutura organizada e ambiente comunitário.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
@@ -26,7 +34,7 @@ const included: Accommodation[] = [
   {
     name: "Alojamento Bloco A",
     tag: "Inclusa no ingresso",
-    image: "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&h=500&fit=crop",
+    images: ["https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&h=500&fit=crop"],
     description: "Alojamento coletivo no Bloco A com infraestrutura completa.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
@@ -38,7 +46,7 @@ const included: Accommodation[] = [
   {
     name: "Alojamento J",
     tag: "Inclusa no ingresso",
-    image: "https://images.unsplash.com/photo-1590490359683-658d3d23f972?w=800&h=500&fit=crop",
+    images: ["https://images.unsplash.com/photo-1590490359683-658d3d23f972?w=800&h=500&fit=crop"],
     description: "Alojamento coletivo no Bloco J, próximo às áreas de convivência.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
@@ -50,7 +58,7 @@ const included: Accommodation[] = [
   {
     name: "Alojamento Bloco C",
     tag: "Inclusa no ingresso",
-    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=500&fit=crop",
+    images: ["https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&h=500&fit=crop"],
     description: "Alojamento coletivo no Bloco C com fácil acesso ao evento.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
@@ -65,7 +73,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.A",
     tag: "Upgrade",
-    image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&h=500&fit=crop",
+    images: ["https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&h=500&fit=crop"],
     description: "Apartamento privativo com conforto superior para você e sua família.",
     amenities: [
       { icon: Bed, label: "Cama de casal" },
@@ -77,7 +85,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.C",
     tag: "Upgrade",
-    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=500&fit=crop",
+    images: ["https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&h=500&fit=crop"],
     description: "Apartamento privativo no bloco C com estrutura completa.",
     amenities: [
       { icon: Bed, label: "Cama de casal" },
@@ -89,7 +97,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Hotel Maple Village",
     tag: "Upgrade",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop",
+    images: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=500&fit=crop"],
     description: "Hospedagem premium no Hotel Maple Village com serviço completo.",
     amenities: [
       { icon: Bed, label: "Cama king size" },
@@ -99,6 +107,60 @@ const upgrades: Accommodation[] = [
     ],
   },
 ];
+
+/* ── Modal image carousel ── */
+const ModalCarousel = ({ images }: { images: string[] }) => {
+  const [current, setCurrent] = useState(0);
+
+  const next = useCallback(() => setCurrent((p) => (p + 1) % images.length), [images.length]);
+  const prev = useCallback(() => setCurrent((p) => (p - 1 + images.length) % images.length), [images.length]);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const id = setInterval(next, 4000);
+    return () => clearInterval(id);
+  }, [next, images.length]);
+
+  if (images.length === 1) {
+    return (
+      <div className="aspect-video overflow-hidden">
+        <img src={images[0]} alt="" className="w-full h-full object-cover" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative aspect-video overflow-hidden">
+      {images.map((img, i) => (
+        <img
+          key={i}
+          src={img}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+          style={{ opacity: i === current ? 1 : 0 }}
+        />
+      ))}
+      {/* Arrows */}
+      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors" aria-label="Anterior">
+        <ChevronLeft className="w-4 h-4" />
+      </button>
+      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors" aria-label="Próximo">
+        <ChevronRight className="w-4 h-4" />
+      </button>
+      {/* Dots */}
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-white w-5" : "bg-white/50"}`}
+            aria-label={`Foto ${i + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 /* ── Horizontal scroll carousel ── */
 const AccCarousel = ({
@@ -117,7 +179,6 @@ const AccCarousel = ({
 
   return (
     <div className="relative group/carousel">
-      {/* Arrows */}
       <button
         onClick={() => scroll(-1)}
         className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity shadow-md"
@@ -146,7 +207,7 @@ const AccCarousel = ({
             style={{ boxShadow: "var(--shadow-card)" }}
           >
             <img
-              src={acc.image}
+              src={acc.images[0]}
               alt={acc.name}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
@@ -238,7 +299,7 @@ const AccommodationsSection = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 30 }}
                 transition={{ duration: 0.3 }}
-                className="relative bg-card rounded-2xl overflow-hidden max-w-md w-full"
+                className="relative bg-card rounded-2xl overflow-hidden max-w-md w-full max-h-[90vh] overflow-y-auto"
                 style={{ boxShadow: "var(--shadow-warm)" }}
                 onClick={(e) => e.stopPropagation()}
               >
@@ -249,13 +310,9 @@ const AccommodationsSection = () => {
                 >
                   <X className="w-4 h-4" />
                 </button>
-                <div className="aspect-video overflow-hidden">
-                  <img
-                    src={selected.image}
-                    alt={selected.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+
+                <ModalCarousel images={selected.images} />
+
                 <div className="p-5 md:p-6">
                   <span
                     className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3 ${
