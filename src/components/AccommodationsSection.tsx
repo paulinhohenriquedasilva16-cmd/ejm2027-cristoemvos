@@ -1,50 +1,17 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { MessageCircle } from "lucide-react";
 
-const accommodations = [
-  {
-    slug: "flat",
-    name: "Padrão Flat",
-    desc: "Acomodação compacta e funcional, ideal para quem busca praticidade com conforto essencial.",
-    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&h=400&fit=crop",
-  },
-  {
-    slug: "prata",
-    name: "Padrão Prata",
-    desc: "Quartos confortáveis com boa estrutura, perfeitos para uma estadia agradável durante o evento.",
-    image: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&h=400&fit=crop",
-  },
-  {
-    slug: "hotel",
-    name: "Padrão Hotel",
-    desc: "Experiência hoteleira completa com comodidades que garantem descanso e bem-estar.",
-    image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&h=400&fit=crop",
-  },
-  {
-    slug: "platina",
-    name: "Padrão Platina",
-    desc: "Acomodação premium com acabamento refinado e espaço amplo para máximo conforto.",
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&h=400&fit=crop",
-  },
-  {
-    slug: "ouro",
-    name: "Padrão Ouro",
-    desc: "Suíte de alto padrão com ambiente sofisticado e amenidades exclusivas.",
-    image: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600&h=400&fit=crop",
-  },
-  {
-    slug: "alojamentos",
-    name: "Alojamentos",
-    desc: "Opção coletiva inclusa na inscrição, com estrutura organizada e ambiente comunitário.",
-    image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&h=400&fit=crop",
-  },
-];
+const alojamento = {
+  slug: "alojamentos",
+  name: "Alojamentos",
+  desc: "Opção coletiva inclusa na inscrição, com estrutura organizada e ambiente comunitário.",
+  image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=600&h=400&fit=crop",
+};
 
 const AccommodationsSection = () => {
   return (
     <section id="acomodacoes" className="section-padding bg-background">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -53,54 +20,64 @@ const AccommodationsSection = () => {
           className="text-center mb-12"
         >
           <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4">
-            Nossas <span className="gradient-text">Acomodações</span>
+            Nosso <span className="gradient-text">Alojamento</span>
           </h2>
           <p className="font-body text-muted-foreground max-w-xl mx-auto">
-            Escolha o tipo de hospedagem que melhor combina com você.
+            Acomodação coletiva inclusa na sua inscrição.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {accommodations.map((item, i) => (
-            <motion.div
-              key={item.slug}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="group rounded-2xl overflow-hidden bg-muted"
-              style={{ boxShadow: "var(--shadow-card)" }}
-            >
-              <div className="aspect-[3/2] overflow-hidden">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-5">
-                <h3 className="font-display text-sm md:text-base text-foreground mb-2">
-                  {item.name}
-                </h3>
-                <p className="font-body text-muted-foreground text-sm leading-relaxed mb-4">
-                  {item.desc}
-                </p>
-                <Link
-                  to={`/acomodacao/${item.slug}`}
-                  className="inline-flex items-center gap-2 text-sm font-medium gradient-text hover:opacity-80 transition-opacity"
-                >
-                  Ver mais detalhes
-                  <ArrowRight className="w-4 h-4 text-primary" />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="group rounded-2xl overflow-hidden bg-muted max-w-2xl mx-auto"
+          style={{ boxShadow: "var(--shadow-card)" }}
+        >
+          <div className="aspect-[3/2] overflow-hidden">
+            <img
+              src={alojamento.image}
+              alt={alojamento.name}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+          <div className="p-5 text-center">
+            <h3 className="font-display text-sm md:text-base text-foreground mb-2">
+              {alojamento.name}
+            </h3>
+            <p className="font-body text-muted-foreground text-sm leading-relaxed">
+              {alojamento.desc}
+            </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-10 text-center rounded-2xl bg-muted p-6 md:p-8 max-w-2xl mx-auto"
+          style={{ boxShadow: "var(--shadow-card)" }}
+        >
+          <p className="font-body text-muted-foreground text-sm md:text-base leading-relaxed mb-5">
+            Caso queira ficar em um <strong className="text-foreground">quarto privativo com sua família</strong>, consulte os quartos e valores de upgrade no checkout, ou entre em contato com o nosso suporte.
+          </p>
+          <a
+            href="https://wa.me/5515997624048?text=Queria%20saber%20mais%20sobre%20as%20acomoda%C3%A7%C3%B5es%20em%20fam%C3%ADlia"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Falar com o suporte
+          </a>
+        </motion.div>
       </div>
     </section>
   );
 };
 
-export { accommodations };
+export { alojamento };
 export default AccommodationsSection;
