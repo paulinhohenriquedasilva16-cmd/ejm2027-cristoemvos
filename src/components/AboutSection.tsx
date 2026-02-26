@@ -82,10 +82,9 @@ const AboutSection = () => {
             </p>
             <div className="aspect-video rounded-xl overflow-hidden bg-muted">
               <iframe
-                src="https://www.youtube.com/embed/kQ2O8YTGH24?autoplay=1&mute=1"
+                src="https://www.youtube.com/embed/kQ2O8YTGH24"
                 title="EJM's 2025 e 2026"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 className="w-full h-full"
               />
