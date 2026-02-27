@@ -41,6 +41,7 @@ interface Accommodation {
   images: string[];
   description: string;
   amenities: { icon: typeof Bed; label: string }[];
+  soldOut?: boolean;
 }
 
 const included: Accommodation[] = [
@@ -110,6 +111,7 @@ const upgrades: Accommodation[] = [
   {
     name: "Apartamento Ouro – CH.C",
     tag: "Privativo · Custo adicional",
+    soldOut: true,
     images: [aptoCHCImg1, aptoCHCImg2, aptoCHCImg3, aptoCHCImg4],
     description: "Apartamento privativo no bloco C com estrutura completa.",
     amenities: [
@@ -228,24 +230,33 @@ const AccCarousel = ({
           <button
             key={acc.name}
             onClick={() => onSelect(acc)}
-            className="group relative flex-none w-52 sm:w-60 rounded-2xl overflow-hidden aspect-[3/4] text-left snap-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+            className={`group relative flex-none w-52 sm:w-60 rounded-2xl overflow-hidden aspect-[3/4] text-left snap-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${acc.soldOut ? "opacity-75" : ""}`}
             style={{ boxShadow: "var(--shadow-card)" }}
           >
             <img
               src={acc.images[0]}
               alt={acc.name}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ${acc.soldOut ? "grayscale" : "group-hover:scale-110"}`}
               loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            {acc.soldOut && (
+              <div className="absolute inset-0 flex items-center justify-center z-[1]">
+                <span className="bg-destructive text-destructive-foreground font-display text-sm sm:text-base font-bold px-4 py-2 rounded-full -rotate-12 shadow-lg">
+                  ESGOTADO
+                </span>
+              </div>
+            )}
             <span
               className={`absolute top-2.5 left-2.5 text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full ${
-                acc.tag === "Privativo · Custo adicional"
-                  ? "bg-secondary text-secondary-foreground"
-                  : "bg-primary text-primary-foreground"
+                acc.soldOut
+                  ? "bg-destructive/80 text-destructive-foreground"
+                  : acc.tag === "Privativo · Custo adicional"
+                    ? "bg-secondary text-secondary-foreground"
+                    : "bg-primary text-primary-foreground"
               }`}
             >
-              {acc.tag}
+              {acc.soldOut ? "Esgotado" : acc.tag}
             </span>
             <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
               <h3 className="font-display text-xs sm:text-sm text-white leading-tight">
