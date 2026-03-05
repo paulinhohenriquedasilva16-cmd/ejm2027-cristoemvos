@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Hotel, Car, Info } from "lucide-react";
+import { Hotel, Info } from "lucide-react";
 
 const ObjectionsSection = () => {
   return (

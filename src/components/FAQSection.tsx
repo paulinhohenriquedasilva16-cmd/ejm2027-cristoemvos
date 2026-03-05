@@ -43,14 +43,9 @@ const faqs = [
       "Sim! Todas as 9 refeições do encontro estão inclusas no valor do seu Passaporte. Você não paga nada a mais por isso.",
   },
   {
-    question: "Como funciona o translado do aeroporto?",
+    question: "Como chego ao local do evento?",
     answer:
-      "Estamos organizando a logística de translado do aeroporto até o local do evento. Mais próximo do evento, serão disponibilizadas orientações detalhadas com pontos estratégicos e horários definidos para facilitar a chegada. Aguarde as instruções oficiais após sua inscrição.",
-  },
-  {
-    question: "Posso ir com meu próprio transporte?",
-    answer:
-      "Sim! Você pode ir com veículo próprio. A Estância Árvore da Vida possui acesso facilitado e estrutura para receber participantes.",
+      "Você pode ir com veículo próprio. A Estância Árvore da Vida possui acesso facilitado e estrutura para receber participantes. Mais próximo do evento, serão disponibilizadas orientações detalhadas para facilitar a sua chegada.",
   },
   {
     question: "Quem pode participar?",
