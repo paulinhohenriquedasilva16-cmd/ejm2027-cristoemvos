@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { CreditCard, QrCode, FileText, ShieldCheck } from "lucide-react";
+import { Bell } from "lucide-react";
 
 const PricingSection = () => {
   return (
@@ -16,7 +16,7 @@ const PricingSection = () => {
             <span className="gradient-text">Inscrição</span>
           </h2>
           <p className="font-body text-muted-foreground mb-10">
-            Garanta sua vaga no 1º Lote com o melhor preço.
+            O 1º Lote foi encerrado. Em breve abriremos o 2º Lote!
           </p>
         </motion.div>
 
@@ -28,48 +28,27 @@ const PricingSection = () => {
           className="rounded-3xl border-2 border-primary/30 bg-muted p-6 sm:p-8 md:p-12 text-center"
           style={{ boxShadow: "var(--shadow-warm)" }}
         >
-          <span className="inline-block gradient-bg text-primary-foreground text-xs font-body font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
-            1º Lote
+          <span className="inline-block bg-muted-foreground/20 text-muted-foreground text-xs font-body font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+            1º Lote — Encerrado
           </span>
 
           <div className="mb-2">
-            <span className="font-body text-muted-foreground text-sm">Por apenas</span>
+            <span className="font-body text-muted-foreground text-sm line-through">R$ 599,99</span>
           </div>
+
           <div className="mb-8">
-            <span className="font-display text-4xl sm:text-5xl md:text-7xl gradient-text">R$ 599</span>
-            <span className="font-display text-xl sm:text-2xl md:text-3xl gradient-text">,99</span>
+            <span className="font-display text-3xl sm:text-4xl md:text-5xl text-muted-foreground/50">
+              2º Lote em breve
+            </span>
           </div>
 
           <p className="font-body text-sm text-muted-foreground mb-8 max-w-md mx-auto">
-            Inclui alimentação completa, alojamento e acesso a toda a programação do evento.
+            Estamos preparando o 2º Lote. Fique atento às nossas redes sociais para não perder a abertura das novas inscrições!
           </p>
 
-          <a
-            href="https://eisme.com.br/evento/ejm2027"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block gradient-bg text-primary-foreground font-display text-sm md:text-base px-10 py-4 rounded-full hover:scale-105 transition-transform animate-pulse-glow mb-8"
-          >
-            Inscrever-se Agora
-          </a>
-
-          {/* Payment methods */}
-          <div className="flex items-center justify-center gap-6 flex-wrap">
-            {[
-              { icon: QrCode, label: "Pix" },
-              { icon: FileText, label: "Boleto" },
-              { icon: CreditCard, label: "Cartão" },
-            ].map((method) => (
-              <div key={method.label} className="flex items-center gap-2 text-muted-foreground">
-                <method.icon className="w-5 h-5" />
-                <span className="font-body text-sm">{method.label}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-center gap-2 mt-6 text-muted-foreground/60">
-            <ShieldCheck className="w-4 h-4" />
-            <span className="font-body text-xs">Pagamento 100% seguro</span>
+          <div className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-display text-sm md:text-base px-10 py-4 rounded-full opacity-80">
+            <Bell className="w-5 h-5 animate-pulse" />
+            Aguarde o 2º Lote
           </div>
         </motion.div>
       </div>
