@@ -106,14 +106,11 @@ const HeroSection = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="mb-8 md:mb-12"
         >
-          <a
-            href="https://eisme.com.br/evento/ejm2027"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block gradient-bg text-primary-foreground font-display text-xs sm:text-sm md:text-base px-6 py-3 sm:px-8 sm:py-4 rounded-full animate-pulse-glow hover:scale-105 transition-transform"
+          <span
+            className="inline-block gradient-bg text-primary-foreground font-display text-xs sm:text-sm md:text-base px-6 py-3 sm:px-8 sm:py-4 rounded-full opacity-90"
           >
-            Garantir minha vaga no 1º Lote
-          </a>
+            2º Lote em breve — Fique atento!
+          </span>
         </motion.div>
 
         <motion.div
