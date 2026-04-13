@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Bell } from "lucide-react";
 
 const PricingSection = () => {
   return (
@@ -16,7 +15,7 @@ const PricingSection = () => {
             <span className="gradient-text">Inscrição</span>
           </h2>
           <p className="font-body text-muted-foreground mb-10">
-            O 1º Lote foi encerrado. Em breve abriremos o 2º Lote!
+            Garanta sua vaga no EJM 2027 com o melhor preço!
           </p>
         </motion.div>
 
@@ -28,28 +27,39 @@ const PricingSection = () => {
           className="rounded-3xl border-2 border-primary/30 bg-muted p-6 sm:p-8 md:p-12 text-center"
           style={{ boxShadow: "var(--shadow-warm)" }}
         >
-          <span className="inline-block bg-muted-foreground/20 text-muted-foreground text-xs font-body font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
-            1º Lote — Encerrado
+          <span className="inline-block gradient-bg text-primary-foreground text-xs font-body font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+            1º Lote
           </span>
 
-          <div className="mb-2">
-            <span className="font-body text-muted-foreground text-sm line-through">R$ 599,99</span>
-          </div>
-
           <div className="mb-8">
-            <span className="font-display text-3xl sm:text-4xl md:text-5xl text-muted-foreground/50">
-              2º Lote em breve
+            <span className="font-display text-3xl sm:text-4xl md:text-5xl text-foreground">
+              R$ 599<span className="text-xl sm:text-2xl">,99</span>
             </span>
           </div>
 
-          <p className="font-body text-sm text-muted-foreground mb-8 max-w-md mx-auto">
-            Estamos preparando o 2º Lote. Fique atento às nossas redes sociais para não perder a abertura das novas inscrições!
-          </p>
+          <ul className="font-body text-sm text-muted-foreground space-y-2 mb-8 max-w-md mx-auto text-left">
+            <li className="flex items-start gap-2">
+              <span className="text-primary mt-0.5">✓</span>
+              Entrada nos 3 dias do encontro
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary mt-0.5">✓</span>
+              Todas as 9 refeições inclusas
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-primary mt-0.5">✓</span>
+              Hospedagem em alojamento compartilhado
+            </li>
+          </ul>
 
-          <div className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-display text-sm md:text-base px-10 py-4 rounded-full opacity-80">
-            <Bell className="w-5 h-5 animate-pulse" />
-            Aguarde o 2º Lote
-          </div>
+          <a
+            href="https://eisme.com.br/evento/ejm2027"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block gradient-bg text-primary-foreground font-display text-sm md:text-base px-10 py-4 rounded-full hover:opacity-90 transition-opacity"
+          >
+            Garantir meu Passaporte
+          </a>
         </motion.div>
       </div>
     </section>
