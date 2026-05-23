@@ -9,10 +9,12 @@ import PricingSection from "@/components/PricingSection";
 import KidsSection from "@/components/KidsSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <LanguageSwitcher />
       
       <HeroSection />
       <AboutSection />
