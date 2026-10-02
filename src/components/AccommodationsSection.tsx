@@ -405,7 +405,7 @@ const AccommodationsSection = () => {
               Ver no checkout
             </a>
             <a
-              href="https://wa.me/5515997624048?text=Queria%20saber%20mais%20sobre%20as%20acomoda%C3%A7%C3%B5es%20em%20fam%C3%ADlia"
+              href="https://chat.whatsapp.com/K05xBp2nu1x2AiazbsoHLa?mode=gi_t"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border-2 border-primary text-primary font-semibold px-6 py-3 rounded-full hover:bg-primary/10 transition-colors text-sm"
