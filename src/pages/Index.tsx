@@ -6,7 +6,8 @@ import ObjectionsSection from "@/components/ObjectionsSection";
 import IncludedSection from "@/components/IncludedSection";
 import AccommodationsSection from "@/components/AccommodationsSection";
 import PricingSection from "@/components/PricingSection";
-import KidsSection from "@/components/KidsSection";
+import SupportTeamSection from "@/components/SupportTeamSection";
+import WhatsAppGroupSection from "@/components/WhatsAppGroupSection";
 import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -23,7 +24,8 @@ const Index = () => {
       <IncludedSection />
       <AccommodationsSection />
       <PricingSection />
-      <KidsSection />
+      <SupportTeamSection />
+      <WhatsAppGroupSection />
       <FAQSection />
       <Footer />
     </div>

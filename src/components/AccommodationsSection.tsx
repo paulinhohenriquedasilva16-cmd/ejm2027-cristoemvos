@@ -405,9 +405,7 @@ const AccommodationsSection = () => {
               Ver no checkout
             </a>
             <a
-              href="https://chat.whatsapp.com/K05xBp2nu1x2AiazbsoHLa?mode=gi_t"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="#suporte"
               className="inline-flex items-center gap-2 border-2 border-primary text-primary font-semibold px-6 py-3 rounded-full hover:bg-primary/10 transition-colors text-sm"
             >
               <MessageCircle className="w-4 h-4" />
