@@ -97,7 +97,7 @@ const included: Accommodation[] = [
 
 const upgrades: Accommodation[] = [
   {
-    name: "Apartamento Ouro – CH.A",
+    name: "Apartamento Ouro | CH.A",
     tag: "Privativo · Custo adicional",
     images: [aptoCHAImg1, aptoCHAImg2, aptoCHAImg3],
     description: "Apartamento privativo com conforto superior para você e sua família.",
