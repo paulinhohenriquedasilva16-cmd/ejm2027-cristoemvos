@@ -79,7 +79,7 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="font-display text-xl sm:text-3xl md:text-5xl lg:text-6xl text-primary-foreground leading-tight mb-4 md:mb-6"
         >
-          EJM 2027 –{" "}
+          EJM 2027 - {" "}
           <span className="gradient-text">ENCHEI-VOS DO ESPIRITO SANTO</span>
         </motion.h1>
 

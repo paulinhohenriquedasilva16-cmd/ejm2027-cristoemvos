@@ -109,7 +109,7 @@ const upgrades: Accommodation[] = [
     ],
   },
   {
-    name: "Apartamento Ouro – CH.C",
+    name: "Apartamento Ouro | CH.C",
     tag: "Privativo · Custo adicional",
     soldOut: true,
     images: [aptoCHCImg1, aptoCHCImg2, aptoCHCImg3, aptoCHCImg4],
