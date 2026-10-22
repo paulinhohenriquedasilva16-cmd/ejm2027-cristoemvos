@@ -76,10 +76,7 @@ const payments = [
 const PriceBlock = ({ pkg }: { pkg: Package }) => (
   <div className="flex min-h-[5.25rem] flex-col items-center justify-center pb-5">
     {pkg.free ? (
-      <>
-        <span className="font-display text-4xl leading-none gradient-text sm:text-5xl">Grátis</span>
-        <span className="mt-2 font-body text-xs text-muted-foreground">0 a 4 anos, no colo do responsável</span>
-      </>
+      <span className="font-display text-4xl leading-none gradient-text sm:text-5xl">Grátis</span>
     ) : (
       <div className="flex items-start justify-center gap-1">
         <span className="mt-2 font-body text-base font-semibold text-muted-foreground">R$</span>
@@ -141,7 +138,7 @@ const PricingSection = () => {
           opts={{ align: "start" }}
           className="w-full"
         >
-          <CarouselContent className="-ml-3 sm:-ml-5">
+          <CarouselContent className="-ml-3 pt-4 pb-6 sm:-ml-5">
             {packages.map((pkg, index) => (
               <CarouselItem
                 key={index}
@@ -157,11 +154,15 @@ const PricingSection = () => {
                   <div
                     className={
                       pkg.featured
-                        ? "group relative flex h-full flex-col rounded-[1.75rem] gradient-bg p-[2px] transition-transform duration-300 hover:-translate-y-1"
-                        : "group relative flex h-full flex-col rounded-[1.75rem] border border-border bg-card transition-transform duration-300 hover:-translate-y-1"
+                        ? "group relative flex h-full flex-col rounded-[1.75rem] gradient-bg p-[2px] shadow-[0_16px_40px_-24px_hsl(var(--primary)/0.5)] transition-transform duration-300 hover:-translate-y-1 lg:shadow-[0_28px_60px_-26px_hsl(var(--primary)/0.5)]"
+                        : "group relative flex h-full flex-col rounded-[1.75rem] border border-border bg-card shadow-[0_14px_36px_-26px_hsl(var(--foreground)/0.4)] transition-transform duration-300 hover:-translate-y-1 lg:shadow-[0_24px_50px_-30px_hsl(var(--foreground)/0.4)]"
                     }
-                    style={{ boxShadow: pkg.featured ? "var(--shadow-warm)" : "var(--shadow-card)" }}
                   >
+                    {pkg.badge && (
+                      <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full gradient-bg px-4 py-1.5 font-body text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+                        {pkg.badge}
+                      </span>
+                    )}
                     <div
                       className={
                         pkg.featured
@@ -169,11 +170,6 @@ const PricingSection = () => {
                           : "relative flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-card p-6 text-center sm:p-7"
                       }
                     >
-                      {pkg.badge && (
-                        <span className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full gradient-bg px-2.5 py-1 font-body text-[10px] font-bold uppercase tracking-wide text-primary-foreground">
-                          {pkg.badge}
-                        </span>
-                      )}
 
                       <div className="mb-5">
                         <span
