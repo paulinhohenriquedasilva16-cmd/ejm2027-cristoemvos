@@ -9,7 +9,7 @@ const PRICE = 70;
 const SIZES = ["PP", "P", "M", "G", "GG", "XG"];
 const PIX_KEY = "177.965.118.09";
 const PIX_NAME = "Pedro Vitorino";
-const WHATSAPP = "5515997624048";
+const WHATSAPP = "5515996183439";
 
 const schema = z.object({
   name: z.string().trim().min(2, "Informe seu nome").max(100),
