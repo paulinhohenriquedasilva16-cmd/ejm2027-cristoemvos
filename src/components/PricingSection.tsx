@@ -19,7 +19,6 @@ type Package = {
   priceCents: string;
   free?: boolean;
   featured?: boolean;
-  badge?: string;
   benefits: string[];
 };
 
