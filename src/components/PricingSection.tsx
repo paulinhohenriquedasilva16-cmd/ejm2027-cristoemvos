@@ -19,7 +19,6 @@ type Package = {
   priceCents: string;
   free?: boolean;
   featured?: boolean;
-  badge?: string;
   benefits: string[];
 };
 
@@ -30,7 +29,6 @@ const packages: Package[] = [
     priceInt: "599",
     priceCents: ",99",
     featured: true,
-    badge: "Mais escolhido",
     benefits: [
       "Entrada nos 3 dias do encontro",
       "Todas as 9 refeições inclusas",
@@ -151,25 +149,8 @@ const PricingSection = () => {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="h-full"
                 >
-                  <div
-                    className={
-                      pkg.featured
-                        ? "group relative flex h-full flex-col rounded-[1.75rem] gradient-bg p-[2px] shadow-[0_16px_40px_-24px_hsl(var(--primary)/0.5)] transition-transform duration-300 hover:-translate-y-1 lg:shadow-[0_28px_60px_-26px_hsl(var(--primary)/0.5)]"
-                        : "group relative flex h-full flex-col rounded-[1.75rem] border border-border bg-card shadow-[0_14px_36px_-26px_hsl(var(--foreground)/0.4)] transition-transform duration-300 hover:-translate-y-1 lg:shadow-[0_24px_50px_-30px_hsl(var(--foreground)/0.4)]"
-                    }
-                  >
-                    {pkg.badge && (
-                      <span className="absolute -top-3 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full gradient-bg px-4 py-1.5 font-body text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
-                        {pkg.badge}
-                      </span>
-                    )}
-                    <div
-                      className={
-                        pkg.featured
-                          ? "relative flex h-full flex-col overflow-hidden rounded-[calc(1.75rem-2px)] bg-card p-6 text-center sm:p-7"
-                          : "relative flex h-full flex-col overflow-hidden rounded-[1.75rem] bg-card p-6 text-center sm:p-7"
-                      }
-                    >
+                  <div className="group relative flex h-full flex-col rounded-[1.75rem] gradient-bg p-[2px] shadow-[0_16px_40px_-24px_hsl(var(--primary)/0.5)] transition-transform duration-300 hover:-translate-y-1 lg:shadow-[0_28px_60px_-26px_hsl(var(--primary)/0.5)]">
+                    <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.75rem-2px)] bg-card p-6 text-center sm:p-7">
 
                       <div className="mb-5">
                         <span
