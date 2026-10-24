@@ -151,9 +151,7 @@ const PricingSection = () => {
                   className="h-full"
                 >
                   <div className="group relative flex h-full flex-col rounded-[1.75rem] gradient-bg p-[2px] shadow-[0_16px_40px_-24px_hsl(var(--primary)/0.5)] transition-transform duration-300 hover:-translate-y-1 lg:shadow-[0_28px_60px_-26px_hsl(var(--primary)/0.5)]">
-                  >
                     <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.75rem-2px)] bg-card p-6 text-center sm:p-7">
-                    >
 
                       <div className="mb-5">
                         <span
