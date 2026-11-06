@@ -84,55 +84,48 @@ const StoreSection = () => {
   };
 
   return (
-    <section id="loja" className="section-padding bg-muted">
-      <div className="max-w-5xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-8">
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-3">
-            <span className="gradient-text">Loja EJM</span>
+    <section id="loja" className="relative overflow-hidden section-padding bg-foreground">
+      <div aria-hidden className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] max-w-full h-80 rounded-full gradient-bg opacity-20 blur-3xl" />
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px gradient-bg opacity-60" />
+      <div className="relative max-w-5xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-10 md:mb-14">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-4 py-1.5 font-body text-[11px] uppercase tracking-[0.25em] text-primary mb-4">
+            <ShoppingBag className="w-3.5 h-3.5" /> Produtos oficiais
+          </span>
+          <h2 className="font-display text-3xl md:text-5xl text-background mb-3">
+            Loja <span className="gradient-text">EJM</span>
           </h2>
-          <p className="font-body text-muted-foreground">Leve o EJM 2027 com você</p>
+          <p className="font-body text-background/70 max-w-md mx-auto">Leve a mensagem de Efésios 5:18 com você, antes, durante e depois do encontro.</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-            className="flex flex-col rounded-3xl border-2 border-primary/30 bg-background p-4 sm:p-6"
-            style={{ boxShadow: "var(--shadow-warm)" }}>
-            <div className="relative rounded-2xl overflow-hidden bg-background">
-              <span className="absolute top-3 left-3 gradient-bg text-primary-foreground text-[10px] sm:text-xs font-body font-bold uppercase tracking-wider px-3 py-1 rounded-full">Novidade</span>
-              <img src={camiseta.url} alt="Camiseta oficial EJM 2027 - frente e costas" className="w-full h-auto object-contain" loading="lazy" />
-            </div>
-            <div className="flex flex-col flex-1 mt-5 text-center">
-              <h3 className="font-display text-xl sm:text-2xl text-foreground mb-2">Camiseta Oficial EJM 2027</h3>
-              <p className="font-body text-sm text-muted-foreground mb-5">"Enchei-vos do Espírito Santo" — Efésios 5:18. Camiseta preta com estampa frontal e nas costas.</p>
-              <div className="flex items-baseline gap-1 justify-center mb-6 mt-auto">
-                <span className="font-body text-xl font-medium text-foreground">R$</span>
-                <span className="font-display text-5xl text-foreground">70<span className="text-2xl text-muted-foreground">,00</span></span>
+        <div className="grid sm:grid-cols-2 gap-6 md:gap-8">
+          {([
+            { id: "camiseta" as Product, img: camiseta.url, alt: "Camiseta oficial EJM 2027 - frente e costas", tag: "Camiseta", title: "Camiseta Oficial EJM 2027", desc: "Camiseta preta com estampa na frente e nas costas.", price: <><span className="font-body text-lg text-background/80">R$</span><span className="font-display text-4xl text-background">70<span className="text-xl text-background/60">,00</span></span></>, sub: "reserva + Pix", cta: "Comprar", Icon: ShoppingBag },
+            { id: "garrafa" as Product, img: garrafa.url, alt: "Garrafa térmica oficial EJM 2027", tag: "Garrafa", title: "Garrafa Térmica EJM 2027", desc: "Tampa hermética, disponível em preto e laranja.", price: <span className="font-display text-2xl text-background">A consultar</span>, sub: "valor no WhatsApp", cta: "Consultar", Icon: MessageCircle },
+          ]).map((p, i) => (
+            <motion.article key={p.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="group flex flex-col rounded-3xl border border-background/10 bg-background/5 backdrop-blur-sm p-3 sm:p-4 transition-colors hover:border-primary/60">
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-background/10">
+                <img src={p.img} alt={p.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+                <span className="absolute top-3 left-3 gradient-bg text-primary-foreground text-[10px] sm:text-xs font-body font-bold uppercase tracking-wider px-3 py-1 rounded-full">{p.tag}</span>
+                <span className="absolute bottom-3 left-3 font-body text-[11px] uppercase tracking-[0.2em] text-background/90">Efésios 5:18</span>
               </div>
-              <button onClick={() => start("camiseta")} className="inline-flex items-center justify-center gap-2 w-full gradient-bg text-primary-foreground font-body font-bold px-8 py-4 rounded-full hover:opacity-90 transition-opacity">
-                <ShoppingBag className="w-5 h-5" /> Comprar
-              </button>
-            </div>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex flex-col rounded-3xl border-2 border-primary/30 bg-background p-4 sm:p-6"
-            style={{ boxShadow: "var(--shadow-warm)" }}>
-            <div className="relative rounded-2xl overflow-hidden bg-background">
-              <span className="absolute top-3 left-3 gradient-bg text-primary-foreground text-[10px] sm:text-xs font-body font-bold uppercase tracking-wider px-3 py-1 rounded-full">Nova</span>
-              <img src={garrafa.url} alt="Garrafa térmica oficial EJM 2027" className="w-full h-auto object-contain" loading="lazy" />
-            </div>
-            <div className="flex flex-col flex-1 mt-5 text-center">
-              <h3 className="font-display text-xl sm:text-2xl text-foreground mb-2">Garrafa Térmica EJM 2027</h3>
-              <p className="font-body text-sm text-muted-foreground mb-5">"Enchei-vos do Espírito Santo" — Efésios 5:18. Garrafa térmica com tampa hermética, disponível em duas cores.</p>
-              <div className="flex flex-col items-center justify-center gap-1 mb-6 mt-auto">
-                <span className="font-display text-3xl sm:text-4xl text-foreground">A consultar</span>
-                <span className="font-body text-xs text-muted-foreground">valor e condições no WhatsApp</span>
+              <div className="flex flex-col flex-1 px-2 pt-5 pb-2">
+                <h3 className="font-display text-lg sm:text-xl text-background mb-2">{p.title}</h3>
+                <p className="font-body text-sm text-background/65 mb-5">{p.desc}</p>
+                <div className="mt-auto flex items-end justify-between gap-3 border-t border-background/10 pt-4">
+                  <div className="min-h-[3.5rem] flex flex-col justify-end">
+                    <div className="flex items-baseline gap-1">{p.price}</div>
+                    <span className="font-body text-[11px] uppercase tracking-wider text-background/50">{p.sub}</span>
+                  </div>
+                  <button onClick={() => start(p.id)} className="shrink-0 inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-body font-bold px-5 py-3 min-h-[44px] rounded-full hover:opacity-90 transition-opacity">
+                    <p.Icon className="w-4 h-4" /> {p.cta}
+                  </button>
+                </div>
               </div>
-              <button onClick={() => start("garrafa")} className="inline-flex items-center justify-center gap-2 w-full gradient-bg text-primary-foreground font-body font-bold px-8 py-4 rounded-full hover:opacity-90 transition-opacity">
-                <MessageCircle className="w-5 h-5" /> Consultar no WhatsApp
-              </button>
-            </div>
-          </motion.div>
+            </motion.article>
+          ))}
         </div>
       </div>
 
