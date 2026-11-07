@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Copy, Check, ShoppingBag, Minus, Plus, MessageCircle } from "lucide-react";
 import camiseta from "@/assets/camiseta-ejm.jpg.asset.json";
 import garrafa from "@/assets/garrafa-ejm.jpg.asset.json";
+import heroBg from "@/assets/hero-bg.jpg";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const PRICE = 70;
@@ -84,9 +85,10 @@ const StoreSection = () => {
   };
 
   return (
-    <section id="loja" className="relative overflow-hidden section-padding bg-foreground">
-      <div aria-hidden className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[40rem] max-w-full h-80 rounded-full gradient-bg opacity-20 blur-3xl" />
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-px gradient-bg opacity-60" />
+    <section id="loja" className="relative overflow-hidden section-padding">
+      <img src={heroBg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+      <div aria-hidden className="absolute inset-0 bg-foreground/75" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-transparent to-foreground/80" />
       <div className="relative max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-10 md:mb-14">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-4 py-1.5 font-body text-[11px] uppercase tracking-[0.25em] text-primary mb-4">
@@ -104,7 +106,7 @@ const StoreSection = () => {
             { id: "garrafa" as Product, img: garrafa.url, alt: "Garrafa térmica oficial EJM 2027", tag: "Garrafa", title: "Garrafa Térmica EJM 2027", desc: "Tampa hermética, disponível em preto e laranja.", price: <span className="font-display text-2xl text-background">A consultar</span>, sub: "valor no WhatsApp", cta: "Consultar", Icon: MessageCircle },
           ]).map((p, i) => (
             <motion.article key={p.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group flex flex-col rounded-3xl border border-background/10 bg-background/5 backdrop-blur-sm p-3 sm:p-4 transition-colors hover:border-primary/60">
+              className="group flex flex-col rounded-3xl border border-background/20 bg-background/10 backdrop-blur-xl p-3 sm:p-4 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/70">
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-background/10">
                 <img src={p.img} alt={p.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
@@ -114,7 +116,7 @@ const StoreSection = () => {
               <div className="flex flex-col flex-1 px-2 pt-5 pb-2">
                 <h3 className="font-display text-lg sm:text-xl text-background mb-2">{p.title}</h3>
                 <p className="font-body text-sm text-background/65 mb-5">{p.desc}</p>
-                <div className="mt-auto flex items-end justify-between gap-3 border-t border-background/10 pt-4">
+                <div className="mt-auto flex items-end justify-between gap-3 border-t border-background/20 pt-4">
                   <div className="min-h-[3.5rem] flex flex-col justify-end">
                     <div className="flex items-baseline gap-1">{p.price}</div>
                     <span className="font-body text-[11px] uppercase tracking-wider text-background/50">{p.sub}</span>
