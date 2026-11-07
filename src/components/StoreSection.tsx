@@ -87,7 +87,8 @@ const StoreSection = () => {
   return (
     <section id="loja" className="relative overflow-hidden section-padding">
       <img src={heroBg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-      <div aria-hidden className="absolute inset-0 bg-foreground/75" />
+      <div aria-hidden className="absolute inset-0 bg-foreground/55" />
+      <div aria-hidden className="absolute inset-0 gradient-bg opacity-25 mix-blend-multiply" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-transparent to-foreground/80" />
       <div className="relative max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-10 md:mb-14">
