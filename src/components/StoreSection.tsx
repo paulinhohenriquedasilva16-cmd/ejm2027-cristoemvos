@@ -104,7 +104,7 @@ const StoreSection = () => {
         <div className="grid sm:grid-cols-2 gap-6 md:gap-8">
           {([
             { id: "camiseta" as Product, img: camiseta.url, alt: "Camiseta oficial EJM 2027 - frente e costas", tag: "Camiseta", title: "Camiseta Oficial EJM 2027", desc: "Camiseta preta com estampa na frente e nas costas.", price: <><span className="font-body text-lg text-background/80">R$</span><span className="font-display text-4xl text-background">70<span className="text-xl text-background/60">,00</span></span></>, sub: "reserva + Pix", cta: "Comprar", Icon: ShoppingBag },
-            { id: "garrafa" as Product, img: garrafa.url, alt: "Garrafa térmica oficial EJM 2027", tag: "Garrafa", title: "Garrafa Térmica EJM 2027", desc: "Tampa hermética, disponível em preto e laranja.", price: <span className="font-display text-2xl text-background">A consultar</span>, sub: "valor no WhatsApp", cta: "Consultar", Icon: MessageCircle },
+            { id: "garrafa" as Product, img: garrafa.url, alt: "Garrafa térmica oficial EJM 2027", tag: "Garrafa", title: "Garrafa Térmica EJM 2027", desc: "Tampa hermética, disponível em preto e laranja.", price: <span className="font-display text-xl sm:text-2xl whitespace-nowrap text-background">A consultar</span>, sub: "valor no WhatsApp", cta: "Consultar", Icon: MessageCircle },
           ]).map((p, i) => (
             <motion.article key={p.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
               className="group flex flex-col rounded-3xl border border-background/20 bg-background/10 backdrop-blur-xl p-3 sm:p-4 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/70">
