@@ -34,6 +34,10 @@ const Footer = () => {
           <p className="font-body text-xs text-primary-foreground/30 mt-2">
             © 2027 Igreja Cristo em Vós | Todos os direitos reservados.
           </p>
+          <p className="font-body text-xs text-primary-foreground/50 mt-3 flex justify-center gap-4">
+            <a href="/privacidade" className="underline hover:text-primary">Privacidade</a>
+            <button type="button" onClick={() => window.dispatchEvent(new Event("ejm-open-cookie-settings"))} className="underline hover:text-primary">Cookies</button>
+          </p>
         </div>
       </div>
     </footer>
