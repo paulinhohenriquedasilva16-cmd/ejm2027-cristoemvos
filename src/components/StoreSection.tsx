@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Copy, Check, ShoppingBag, Minus, Plus, MessageCircle } from "lucide-react";
 import camiseta from "@/assets/camiseta-ejm.jpg.asset.json";
 import garrafa from "@/assets/garrafa-ejm.jpg.asset.json";
-import heroBg from "@/assets/hero-bg.jpg";
+import lojaBg from "@/assets/loja-bg.jpg";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 const PRICE = 70;
@@ -86,10 +86,11 @@ const StoreSection = () => {
 
   return (
     <section id="loja" className="relative overflow-hidden section-padding">
-      <img src={heroBg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-      <div aria-hidden className="absolute inset-0 bg-foreground/55" />
-      <div aria-hidden className="absolute inset-0 gradient-bg opacity-25 mix-blend-multiply" />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-transparent to-foreground/80" />
+      <img src={lojaBg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+      <div aria-hidden className="absolute inset-0 bg-foreground/60" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/35 to-foreground/75" />
+      <div aria-hidden className="absolute inset-0 gradient-bg opacity-15 mix-blend-multiply" />
+      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-transparent to-foreground/85" />
       <div className="relative max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-10 md:mb-14">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-4 py-1.5 font-body text-[11px] uppercase tracking-[0.25em] text-primary mb-4">
