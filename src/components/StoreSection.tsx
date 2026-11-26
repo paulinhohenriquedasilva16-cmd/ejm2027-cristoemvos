@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { z } from "zod";
-import { Copy, Check, ShoppingBag, Minus, Plus, MessageCircle } from "lucide-react";
+import { Copy, Check, ShoppingBag, Minus, Plus } from "lucide-react";
 import camiseta from "@/assets/camiseta-ejm.jpg.asset.json";
-import garrafa from "@/assets/garrafa-ejm.jpg.asset.json";
 import lojaBg from "@/assets/loja-bg.jpg";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
@@ -13,16 +12,9 @@ const PIX_KEY = "177.965.118.09";
 const PIX_NAME = "Pedro Vitorino";
 const WHATSAPP = "5515996183439";
 
-type Product = "camiseta" | "garrafa";
-
 const shirtSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome").max(100),
   size: z.enum(SIZES as [string, ...string[]], { errorMap: () => ({ message: "Escolha o tamanho" }) }),
-  qty: z.number().int().min(1).max(50),
-});
-
-const bottleSchema = z.object({
-  name: z.string().trim().min(2, "Informe seu nome").max(100),
   qty: z.number().int().min(1).max(50),
 });
 
@@ -31,19 +23,16 @@ const openWhats = (msg: string) =>
 
 const StoreSection = () => {
   const [open, setOpen] = useState(false);
-  const [product, setProduct] = useState<Product>("camiseta");
   const [name, setName] = useState("");
   const [size, setSize] = useState("");
   const [qty, setQty] = useState(1);
   const [error, setError] = useState("");
-  const [step, setStep] = useState<"form" | "pix" | "sent">("form");
+  const [step, setStep] = useState<"form" | "pix">("form");
   const [copied, setCopied] = useState(false);
-  const [lastMsg, setLastMsg] = useState("");
 
   const total = (PRICE * qty).toFixed(2).replace(".", ",");
 
-  const start = (p: Product) => {
-    setProduct(p);
+  const start = () => {
     setStep("form");
     setError("");
     setCopied(false);
@@ -58,24 +47,12 @@ const StoreSection = () => {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (product === "camiseta") {
-      const r = shirtSchema.safeParse({ name, size, qty });
-      if (!r.success) { setError(r.error.issues[0].message); return; }
-      setError("");
-      const msg = `Olá! Meu nome é ${r.data.name}. Quero reservar ${r.data.qty} camisa(s) do EJM no tamanho ${r.data.size}. Total: R$ ${total}.`;
-      setLastMsg(msg);
-      openWhats(msg);
-      setStep("pix");
-      return;
-    }
-
-    const r = bottleSchema.safeParse({ name, qty });
+    const r = shirtSchema.safeParse({ name, size, qty });
     if (!r.success) { setError(r.error.issues[0].message); return; }
     setError("");
-    const msg = `Olá! Meu nome é ${r.data.name}. Quero saber o valor e as condições da garrafa térmica do EJM 2027: ${r.data.qty} unidade(s).`;
-    setLastMsg(msg);
+    const msg = `Olá! Meu nome é ${r.data.name}. Quero reservar ${r.data.qty} camisa(s) do EJM no tamanho ${r.data.size}. Total: R$ ${total}.`;
     openWhats(msg);
-    setStep("sent");
+    setStep("pix");
   };
 
   const copyPix = async () => {
@@ -94,7 +71,7 @@ const StoreSection = () => {
       <div className="relative max-w-5xl mx-auto">
         <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-10 md:mb-14">
           <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-4 py-1.5 font-body text-[11px] uppercase tracking-[0.25em] text-primary mb-4">
-            <ShoppingBag className="w-3.5 h-3.5" /> Produtos oficiais
+            <ShoppingBag className="w-3.5 h-3.5" /> Produto oficial
           </span>
           <h2 className="font-display text-3xl md:text-5xl text-background mb-3">
             Loja <span className="gradient-text">EJM</span>
@@ -102,35 +79,31 @@ const StoreSection = () => {
           <p className="font-body text-background/70 max-w-md mx-auto">Leve a mensagem de Efésios 5:18 com você, antes, durante e depois do encontro.</p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 gap-6 md:gap-8">
-          {([
-            { id: "camiseta" as Product, img: camiseta.url, alt: "Camiseta oficial EJM 2027 - frente e costas", tag: "Camiseta", title: "Camiseta Oficial EJM 2027", desc: "Camiseta preta com estampa na frente e nas costas.", price: <><span className="font-body text-lg text-background/80">R$</span><span className="font-display text-4xl text-background">70<span className="text-xl text-background/60">,00</span></span></>, sub: "reserva + Pix", cta: "Comprar", Icon: ShoppingBag },
-            { id: "garrafa" as Product, img: garrafa.url, alt: "Garrafa térmica oficial EJM 2027", tag: "Garrafa", title: "Garrafa Térmica EJM 2027", desc: "Tampa hermética, disponível em preto e laranja.", price: <span className="font-display text-xl sm:text-2xl whitespace-nowrap text-background">A consultar</span>, sub: "valor no WhatsApp", cta: "Consultar", Icon: MessageCircle },
-          ]).map((p, i) => (
-            <motion.article key={p.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group flex flex-col rounded-3xl border border-background/20 bg-background/10 backdrop-blur-xl p-3 sm:p-4 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/70">
-              <div className="relative aspect-square rounded-2xl overflow-hidden bg-background/10">
-                <img src={p.img} alt={p.alt} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
-                <span className="absolute top-3 left-3 gradient-bg text-primary-foreground text-[10px] sm:text-xs font-body font-bold uppercase tracking-wider px-3 py-1 rounded-full">{p.tag}</span>
-                <span className="absolute bottom-3 left-3 font-body text-[11px] uppercase tracking-[0.2em] text-background/90">Efésios 5:18</span>
-              </div>
-              <div className="flex flex-col flex-1 px-2 pt-5 pb-2">
-                <h3 className="font-display text-lg sm:text-xl text-background mb-2">{p.title}</h3>
-                <p className="font-body text-sm text-background/65 mb-5">{p.desc}</p>
-                <div className="mt-auto flex items-end justify-between gap-3 border-t border-background/20 pt-4">
-                  <div className="min-h-[3.5rem] flex flex-col justify-end">
-                    <div className="flex items-baseline gap-1">{p.price}</div>
-                    <span className="font-body text-[11px] uppercase tracking-wider text-background/50">{p.sub}</span>
-                  </div>
-                  <button onClick={() => start(p.id)} className="shrink-0 inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-body font-bold px-5 py-3 min-h-[44px] rounded-full hover:opacity-90 transition-opacity">
-                    <p.Icon className="w-4 h-4" /> {p.cta}
-                  </button>
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+          className="group max-w-sm mx-auto flex flex-col rounded-3xl border border-background/20 bg-background/10 backdrop-blur-xl p-3 sm:p-4 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/70">
+          <div className="relative aspect-square rounded-2xl overflow-hidden bg-background/10">
+            <img src={camiseta.url} alt="Camiseta oficial EJM 2027 - frente e costas" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+            <span className="absolute top-3 left-3 gradient-bg text-primary-foreground text-[10px] sm:text-xs font-body font-bold uppercase tracking-wider px-3 py-1 rounded-full">Camiseta</span>
+            <span className="absolute bottom-3 left-3 font-body text-[11px] uppercase tracking-[0.2em] text-background/90">Efésios 5:18</span>
+          </div>
+          <div className="flex flex-col flex-1 px-2 pt-5 pb-2">
+            <h3 className="font-display text-lg sm:text-xl text-background mb-2">Camiseta Oficial EJM 2027</h3>
+            <p className="font-body text-sm text-background/65 mb-5">Camiseta preta com estampa na frente e nas costas.</p>
+            <div className="mt-auto flex items-end justify-between gap-3 border-t border-background/20 pt-4">
+              <div className="min-h-[3.5rem] flex flex-col justify-end">
+                <div className="flex items-baseline gap-1">
+                  <span className="font-body text-lg text-background/80">R$</span>
+                  <span className="font-display text-4xl text-background">70<span className="text-xl text-background/60">,00</span></span>
                 </div>
+                <span className="font-body text-[11px] uppercase tracking-wider text-background/50">reserva + Pix</span>
               </div>
-            </motion.article>
-          ))}
-        </div>
+              <button onClick={start} className="shrink-0 inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-body font-bold px-5 py-3 min-h-[44px] rounded-full hover:opacity-90 transition-opacity">
+                <ShoppingBag className="w-4 h-4" /> Comprar
+              </button>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       <Dialog open={open} onOpenChange={reset}>
@@ -138,14 +111,8 @@ const StoreSection = () => {
           {step === "form" ? (
             <>
               <DialogHeader>
-                <DialogTitle className="font-display text-lg">
-                  {product === "camiseta" ? "Reservar camiseta" : "Consultar garrafa térmica"}
-                </DialogTitle>
-                <DialogDescription>
-                  {product === "camiseta"
-                    ? "Preencha os dados e envie sua reserva pelo WhatsApp."
-                    : "Preencha os dados e envie sua consulta pelo WhatsApp para recebermos o valor."}
-                </DialogDescription>
+                <DialogTitle className="font-display text-lg">Reservar camiseta</DialogTitle>
+                <DialogDescription>Preencha os dados e envie sua reserva pelo WhatsApp.</DialogDescription>
               </DialogHeader>
               <form onSubmit={submit} className="space-y-5 font-body">
                 <div>
@@ -153,35 +120,31 @@ const StoreSection = () => {
                   <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100}
                     className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Nome completo" />
                 </div>
-                {product === "camiseta" && (
-                  <div>
-                    <label className="text-sm font-medium text-foreground block mb-1.5">Tamanho</label>
-                    <div className="grid grid-cols-6 gap-2">
-                      {SIZES.map((s) => (
-                        <button type="button" key={s} onClick={() => setSize(s)}
-                          className={`rounded-lg border py-2 text-sm font-semibold transition-colors ${size === s ? "gradient-bg text-primary-foreground border-transparent" : "border-input text-foreground hover:border-primary"}`}>{s}</button>
-                      ))}
-                    </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground block mb-1.5">Tamanho</label>
+                  <div className="grid grid-cols-6 gap-2">
+                    {SIZES.map((s) => (
+                      <button type="button" key={s} onClick={() => setSize(s)}
+                        className={`rounded-lg border py-2 text-sm font-semibold transition-colors ${size === s ? "gradient-bg text-primary-foreground border-transparent" : "border-input text-foreground hover:border-primary"}`}>{s}</button>
+                    ))}
                   </div>
-                )}
+                </div>
                 <div>
                   <label className="text-sm font-medium text-foreground block mb-1.5">Quantidade</label>
                   <div className="flex items-center gap-3">
                     <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-10 h-10 rounded-full border border-input flex items-center justify-center hover:border-primary"><Minus className="w-4 h-4" /></button>
                     <span className="font-display text-xl w-8 text-center">{qty}</span>
                     <button type="button" onClick={() => setQty((q) => Math.min(50, q + 1))} className="w-10 h-10 rounded-full border border-input flex items-center justify-center hover:border-primary"><Plus className="w-4 h-4" /></button>
-                    {product === "camiseta" && (
-                      <span className="ml-auto text-sm text-muted-foreground">Total: <strong className="text-foreground">R$ {total}</strong></span>
-                    )}
+                    <span className="ml-auto text-sm text-muted-foreground">Total: <strong className="text-foreground">R$ {total}</strong></span>
                   </div>
                 </div>
                 {error && <p className="text-sm text-destructive">{error}</p>}
                 <button type="submit" className="w-full gradient-bg text-primary-foreground font-bold py-3.5 rounded-full hover:opacity-90">
-                  {product === "camiseta" ? "Enviar reserva pelo WhatsApp" : "Enviar consulta pelo WhatsApp"}
+                  Enviar reserva pelo WhatsApp
                 </button>
               </form>
             </>
-          ) : step === "pix" ? (
+          ) : (
             <>
               <DialogHeader>
                 <DialogTitle className="font-display text-lg">Pagamento via Pix</DialogTitle>
@@ -195,18 +158,6 @@ const StoreSection = () => {
                 </div>
                 <button onClick={copyPix} className="w-full inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-bold py-3.5 rounded-full hover:opacity-90">
                   {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar chave Pix</>}
-                </button>
-              </div>
-            </>
-          ) : (
-            <>
-              <DialogHeader>
-                <DialogTitle className="font-display text-lg">Consulta enviada</DialogTitle>
-                <DialogDescription>Abrimos o WhatsApp com sua consulta. Envie a mensagem para recebermos o valor e as condições da garrafa.</DialogDescription>
-              </DialogHeader>
-              <div className="font-body space-y-4">
-                <button onClick={() => openWhats(lastMsg)} className="w-full inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-bold py-3.5 rounded-full hover:opacity-90">
-                  <MessageCircle className="w-4 h-4" /> Abrir WhatsApp novamente
                 </button>
               </div>
             </>
