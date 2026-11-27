@@ -162,6 +162,7 @@ export const STORE_JSON_LD: Record<string, unknown> = {
     {
       "@type": "Product",
       name: "Camiseta Oficial EJM 2027",
+      image: [`${SITE_ORIGIN}/camiseta-ejm.jpg`],
       description:
         "Modelagem unissex preta (PP ao XG) com estampa frente e costas (Efésios 5:18). Retirada presencial no credenciamento do EJM 2027 sem frete.",
       brand: {
@@ -174,6 +175,7 @@ export const STORE_JSON_LD: Record<string, unknown> = {
         url: `${SITE_ORIGIN}/loja`,
         priceCurrency: "BRL",
         price: "70.00",
+        priceValidUntil: "2027-01-17",
         availability: "https://schema.org/InStock",
         itemCondition: "https://schema.org/NewCondition",
       },

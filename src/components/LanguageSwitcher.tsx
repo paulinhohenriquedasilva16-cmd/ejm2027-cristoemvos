@@ -135,7 +135,7 @@ const LanguageSwitcher = ({ variant = "transparent", standalone = false }: Langu
   const triggerClasses =
     variant === "solid"
       ? "inline-flex min-h-[44px] items-center gap-1 rounded-full border border-border bg-muted/80 px-2.5 text-xs font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-muted font-body sm:px-3"
-      : "inline-flex min-h-[44px] items-center gap-1 rounded-full border border-white/25 bg-graphite/80 px-2.5 text-xs font-medium text-white backdrop-blur-md transition-colors hover:bg-graphite/95 font-body sm:px-3";
+      : "inline-flex min-h-[44px] items-center gap-1 rounded-full border border-white/25 bg-graphite/85 px-2.5 text-xs font-medium text-white md:backdrop-blur-md transition-colors hover:bg-graphite/95 font-body sm:px-3";
 
   const content = (
     <>

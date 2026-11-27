@@ -310,7 +310,7 @@ const PricingSection = () => {
                     className={
                       ticket.featured
                         ? "group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full gradient-bg px-5 py-3.5 text-center font-body text-sm font-bold text-primary-foreground transition-opacity duration-200 hover:opacity-95 active:scale-[0.98]"
-                        : "group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-5 py-3.5 text-center font-body text-sm font-bold text-primary-ink transition-colors duration-200 hover:bg-primary hover:text-primary-foreground active:scale-[0.98]"
+                        : "group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-5 py-3.5 text-center font-body text-sm font-bold text-primary-ink transition-colors duration-200 hover:bg-primary-ink hover:text-primary-foreground active:scale-[0.98]"
                     }
                   >
                     <span>{ticket.ctaLabel}</span>
@@ -490,7 +490,7 @@ const PricingSection = () => {
             <CheckoutLink
               source="pricing_child"
               ticketId="geral"
-              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-6 py-2.5 font-body text-xs font-bold text-primary-ink transition-colors hover:bg-primary hover:text-primary-foreground sm:text-sm"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-6 py-2.5 font-body text-xs font-bold text-primary-ink transition-colors hover:bg-primary-ink hover:text-primary-foreground sm:text-sm"
             >
               <span>Fazer inscrição na mesma página dos ingressos</span>
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

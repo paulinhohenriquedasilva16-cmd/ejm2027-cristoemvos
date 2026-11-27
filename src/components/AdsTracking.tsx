@@ -166,7 +166,7 @@ const AdsTracking = () => {
       onKeyDown={(e) => {
         if (e.key === "Escape") setShow(false);
       }}
-      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] inset-x-4 z-[60] mx-auto max-w-xl rounded-2xl border border-border bg-background/95 p-5 shadow-2xl backdrop-blur-xl font-body focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] inset-x-4 z-[60] mx-auto max-w-xl rounded-2xl border border-border bg-background p-5 shadow-2xl md:bg-background/95 md:backdrop-blur-xl font-body focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       <p className="mb-4 text-sm text-foreground">
         Usamos ferramentas de medição (Google Tag Manager, Meta Pixel, Google Analytics e Microsoft Clarity) para entender visitas, cliques na inscrição e melhorar nossos anúncios. Você pode alterar sua escolha quando quiser em &quot;Preferências de Cookies&quot; no rodapé.{" "}

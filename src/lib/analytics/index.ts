@@ -205,8 +205,13 @@ function dispatchToProviders<K extends AnalyticsEventName>(
           content_category: p.attendant_role ?? p.channel,
         });
       }
-      const isSocialShare = p.channel === "share_parents" || p.channel === "share_crew";
-      trackGa4Event(isSocialShare ? "share" : "generate_lead", {
+      const ga4Event =
+        p.channel === "share_parents" || p.channel === "share_crew"
+          ? "share"
+          : p.channel === "official_group"
+            ? "join_whatsapp_group"
+            : "generate_lead";
+      trackGa4Event(ga4Event, {
         method: "whatsapp",
         channel: p.channel,
         ...(p.attendant_name ? { attendant_name: p.attendant_name } : {}),
@@ -393,6 +398,8 @@ export async function initAnalytics(): Promise<{ needsBanner: boolean }> {
 
   if (bootstrapped) {
     deactivateProviders();
+  } else {
+    clearPersistentAttribution();
   }
 
   const needsBanner = resolved.choice === null && resolved.needsConsent && resolved.source !== "gpc";

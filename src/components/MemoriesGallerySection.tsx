@@ -136,7 +136,7 @@ const MemoriesGallerySection = () => {
         </motion.div>
 
         {/* Vibe Filters with animated layoutId pill + counts */}
-        <div role="group" aria-label="Filtrar fotos por vibe" className="mb-8 flex flex-wrap justify-center gap-2">
+        <div role="group" aria-label="Filtrar fotos por tema" className="mb-8 flex flex-wrap justify-center gap-2">
           {VIBE_FILTERS.map((f) => {
             const active = filter === f.id;
             return (

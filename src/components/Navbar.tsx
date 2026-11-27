@@ -63,7 +63,7 @@ const Navbar = ({ alwaysSolid = false }: NavbarProps) => {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         isSolid
-          ? "border-b border-border bg-background/95 text-foreground shadow-sm backdrop-blur-xl"
+          ? "border-b border-border bg-background/98 text-foreground shadow-sm md:bg-background/95 md:backdrop-blur-xl"
           : "border-b border-transparent bg-gradient-to-b from-black/65 to-transparent text-white"
       }`}
     >

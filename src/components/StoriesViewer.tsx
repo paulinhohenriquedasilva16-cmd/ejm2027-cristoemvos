@@ -69,6 +69,8 @@ const StoriesViewer = ({ open, onOpenChange }: StoriesViewerProps) => {
       if (e.key === "ArrowRight") next();
       if (e.key === "ArrowLeft") prev();
       if (e.key === " ") {
+        const target = e.target as HTMLElement | null;
+        if (target?.closest("button, a")) return;
         e.preventDefault();
         setPaused((p) => !p);
       }

@@ -24,6 +24,7 @@ function prerenderStoreRouteHtml(): Plugin {
           {
             "@type": "Product",
             name: "Camiseta Oficial EJM 2027",
+            image: ["https://ejm.cristoemvos.com/camiseta-ejm.jpg"],
             description:
               "Modelagem unissex preta (PP ao XG) com estampa frente e costas (Efésios 5:18). Retirada presencial no credenciamento do EJM 2027 sem frete.",
             brand: { "@type": "Brand", name: "EJM 2027 - Igreja Cristo em Vós" },
@@ -33,6 +34,7 @@ function prerenderStoreRouteHtml(): Plugin {
               url: "https://ejm.cristoemvos.com/loja",
               priceCurrency: "BRL",
               price: "70.00",
+              priceValidUntil: "2027-01-17",
               availability: "https://schema.org/InStock",
               itemCondition: "https://schema.org/NewCondition",
             },

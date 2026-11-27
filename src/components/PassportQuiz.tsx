@@ -209,7 +209,7 @@ const PassportQuiz = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackEvent("whatsapp_click", { channel: "caravans" })}
-                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-5 py-3 font-body text-sm font-bold text-primary-ink transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto"
+                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-5 py-3 font-body text-sm font-bold text-primary-ink transition-colors hover:bg-primary-ink hover:text-primary-foreground sm:w-auto"
                   >
                     <MessageCircle className="h-4 w-4" aria-hidden="true" />
                     <span>Falar com equipe de caravanas</span>
@@ -219,7 +219,7 @@ const PassportQuiz = () => {
                 {who === "familia" && (
                   <a
                     href="#desconto-infantil"
-                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-5 py-3 font-body text-sm font-bold text-primary-ink transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto"
+                    className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-5 py-3 font-body text-sm font-bold text-primary-ink transition-colors hover:bg-primary-ink hover:text-primary-foreground sm:w-auto"
                   >
                     <Users className="h-4 w-4" aria-hidden="true" />
                     <span>Ver valores infantis abaixo</span>

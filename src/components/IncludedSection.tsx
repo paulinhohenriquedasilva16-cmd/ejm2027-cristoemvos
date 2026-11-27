@@ -54,7 +54,7 @@ const IncludedSection = () => {
             O que está <span className="gradient-text">Incluso</span>
           </h2>
           <p className="mx-auto max-w-xl font-body text-sm text-muted-foreground sm:text-base">
-            Tudo planejado para você viver três dias intensos sem preocupações. Toque em um card para ver detalhes.
+            Tudo planejado para você viver três dias intensos sem preocupações. Toque em um item para ver detalhes.
           </p>
         </motion.div>
 
@@ -107,7 +107,7 @@ const IncludedSection = () => {
                       <p>{item.detail}</p>
                       <a
                         href={item.href}
-                        className="mt-2 inline-flex min-h-[40px] items-center gap-1 font-semibold text-primary-ink underline underline-offset-4"
+                        className="mt-2 inline-flex min-h-[44px] items-center gap-1 font-semibold text-primary-ink underline underline-offset-4"
                       >
                         <span>{item.linkLabel}</span>
                         <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

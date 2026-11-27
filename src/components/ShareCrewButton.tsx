@@ -16,7 +16,7 @@ const ShareCrewButton = ({ className = "" }: ShareCrewButtonProps) => (
     target="_blank"
     rel="noopener noreferrer"
     onClick={() => trackEvent("whatsapp_click", { channel: "share_crew" })}
-    className={`inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-primary px-6 py-3 font-body text-sm font-bold text-primary-ink transition-all hover:-translate-y-0.5 hover:bg-primary hover:text-primary-foreground active:scale-95 ${className}`}
+    className={`inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-primary px-6 py-3 font-body text-sm font-bold text-primary-ink transition-all hover:-translate-y-0.5 hover:bg-primary-ink hover:text-primary-foreground active:scale-95 ${className}`}
   >
     <Share2 className="h-4 w-4" aria-hidden="true" />
     Chame a galera
