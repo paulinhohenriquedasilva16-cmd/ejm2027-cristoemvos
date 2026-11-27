@@ -104,9 +104,22 @@ export function trackGa4Event(name: string, params?: Record<string, unknown>): v
   if (typeof window === "undefined" || !tagId || !initialized) return;
 
   if (ANALYTICS_CONFIG.isGtmContainer) {
-    // Clear previous ecommerce object before pushing new ecommerce payload to avoid GTM variable bleed
+    // Follow GA4 Data Layer ecommerce schema when items are present
     if (params && "items" in params) {
+      const { currency, value, items, ...rest } = params;
       window.dataLayer?.push({ ecommerce: null });
+      window.dataLayer?.push({
+        event: name,
+        attendant_name: undefined,
+        attendant_role: undefined,
+        ...rest,
+        ecommerce: {
+          ...(currency !== undefined ? { currency } : {}),
+          ...(value !== undefined ? { value } : {}),
+          items,
+        },
+      });
+      return;
     }
     window.dataLayer?.push({
       event: name,

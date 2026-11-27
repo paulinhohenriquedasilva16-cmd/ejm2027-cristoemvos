@@ -60,12 +60,12 @@ const scheduleDays: ScheduleDay[] = [
     shortLabel: "Sábado",
     dateLabel: "16/Jan",
     fullTitle: "Sábado · 16 de Janeiro",
-    summary: "Dia completo: Louvorzão Ranchão pela manhã, gincanas à tarde, Culto às 16:30 e 4 refeições inclusas.",
+    summary: "Dia completo: Louvorzão/Ranchão pela manhã, gincanas à tarde, Culto às 16:30 e 4 refeições inclusas.",
     moments: [
       { time: "08:00", title: "Café da Manhã", category: "Refeição inclusa" },
       {
         time: "09:30",
-        title: "Louvorzão Ranchão",
+        title: "Louvorzão/Ranchão",
         category: "Comunhão",
         highlight: true,
         note: "Sábado de manhã com toda a galera cantando junto ao ar livre",

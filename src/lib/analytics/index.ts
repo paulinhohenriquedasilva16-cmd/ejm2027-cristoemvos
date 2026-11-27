@@ -194,6 +194,8 @@ function dispatchToProviders<K extends AnalyticsEventName>(
       const p = payload as AnalyticsEventMap["whatsapp_click"];
       if (p.channel === "share_parents") {
         trackMetaCustom("ShareParentsWhatsApp", { channel: p.channel });
+      } else if (p.channel === "share_crew") {
+        trackMetaCustom("ShareCrewWhatsApp", { channel: p.channel });
       } else if (p.channel === "official_group") {
         // Keep standard Meta Lead strictly for warm 1-on-1 commercial contacts
         trackMetaCustom("JoinWhatsAppGroup", { channel: p.channel });
@@ -203,7 +205,8 @@ function dispatchToProviders<K extends AnalyticsEventName>(
           content_category: p.attendant_role ?? p.channel,
         });
       }
-      trackGa4Event("generate_lead", {
+      const isSocialShare = p.channel === "share_parents" || p.channel === "share_crew";
+      trackGa4Event(isSocialShare ? "share" : "generate_lead", {
         method: "whatsapp",
         channel: p.channel,
         ...(p.attendant_name ? { attendant_name: p.attendant_name } : {}),

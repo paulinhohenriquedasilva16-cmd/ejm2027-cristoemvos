@@ -23,7 +23,17 @@ const CheckoutLink = React.forwardRef<HTMLAnchorElement, CheckoutLinkProps>(
     }, [baseUrl]);
 
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-      const latestUrl = buildCheckoutUrl({ baseUrl });
+      let latestUrl = buildCheckoutUrl({ baseUrl });
+      try {
+        const currentGl = new URL(e.currentTarget.href).searchParams.get("_gl");
+        if (currentGl) {
+          const parsed = new URL(latestUrl);
+          parsed.searchParams.set("_gl", currentGl);
+          latestUrl = parsed.toString();
+        }
+      } catch {
+        // Ignore malformed URL edge cases
+      }
       e.currentTarget.href = latestUrl;
       trackCheckoutClick({
         source,
@@ -39,7 +49,7 @@ const CheckoutLink = React.forwardRef<HTMLAnchorElement, CheckoutLinkProps>(
         ref={ref}
         href={href}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener"
         data-checkout-tracked="true"
         data-ticket-id={ticketId}
         data-checkout-source={source}

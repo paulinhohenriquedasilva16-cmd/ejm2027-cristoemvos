@@ -13,7 +13,7 @@ export interface StoreProduct {
   status: "available" | "coming_soon";
 }
 
-export const STORE_PIX_KEY = "177.965.118.09";
+export const STORE_PIX_KEY = "177.965.118-09";
 export const STORE_PIX_NAME = "Pedro Vitorino";
 export const STORE_WHATSAPP = "5515996183439";
 

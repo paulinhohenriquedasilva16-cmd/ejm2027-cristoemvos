@@ -30,7 +30,7 @@ describe("Store page (/loja)", () => {
     fireEvent.click(screen.getByRole("button", { name: /Continuar para o Pix/i }));
 
     expect(screen.getByText(/Pagamento via Pix/i)).toBeInTheDocument();
-    expect(screen.getByText("177.965.118.09")).toBeInTheDocument();
+    expect(screen.getByText("177.965.118-09")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /Enviar reserva e comprovante no WhatsApp/i })
     ).toBeInTheDocument();

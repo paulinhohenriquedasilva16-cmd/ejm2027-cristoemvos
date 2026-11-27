@@ -37,7 +37,7 @@ export const VIBE_FILTERS: { id: "todos" | MemoryVibe; label: string }[] = [
   { id: "todos", label: "Todos" },
   { id: "adoracao", label: "Adoração" },
   { id: "comunhao", label: "Comunhão" },
-  { id: "galera", label: "Gincanas e Galera" },
+  { id: "galera", label: "Gincanas e Companheirismo" },
 ];
 
 export const MEMORIES: Memory[] = [

@@ -2,11 +2,11 @@ import { useState } from "react";
 
 const WORDS = [
   "EFÉSIOS 5:18",
-  "LOUVORZÃO NO RANCHÃO",
+  "LOUVORZÃO/RANCHÃO",
   "9 REFEIÇÕES JÁ PAGAS",
   "15 A 17 JAN",
   "ESTÂNCIA ÁRVORE DA VIDA",
-  "GINCANAS E GALERA",
+  "GINCANAS E COMPANHEIRISMO",
   "COMUNHÃO DE VERDADE",
 ];
 

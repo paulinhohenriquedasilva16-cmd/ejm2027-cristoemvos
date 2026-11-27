@@ -14,7 +14,7 @@ const TOTAL = STORIES.length + 1;
 const VIBE_LABELS: Record<MemoryVibe, string> = {
   adoracao: "Adoração",
   comunhao: "Comunhão",
-  galera: "Gincanas e Galera",
+  galera: "Gincanas e Companheirismo",
 };
 
 interface StoriesViewerProps {
@@ -32,7 +32,7 @@ const StoriesViewer = ({ open, onOpenChange }: StoriesViewerProps) => {
   const isPaused = paused || holding || Boolean(reduceMotion);
 
   useEffect(() => {
-    if (open) {
+    if (!open) {
       setIndex(0);
       setPaused(false);
       setHolding(false);

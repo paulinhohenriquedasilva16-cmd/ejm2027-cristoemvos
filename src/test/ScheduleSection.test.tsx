@@ -22,7 +22,7 @@ describe("ScheduleSection", () => {
     fireEvent.keyDown(sextaTab, { key: "ArrowRight" });
     expect(sabadoTab).toHaveAttribute("aria-selected", "true");
     expect(document.getElementById("panel-sabado")).not.toHaveAttribute("hidden");
-    expect(screen.getByRole("heading", { name: /Louvorzão Ranchão/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Louvorzão\/Ranchão/i })).toBeInTheDocument();
 
     fireEvent.keyDown(sabadoTab, { key: "ArrowRight" });
     expect(domingoTab).toHaveAttribute("aria-selected", "true");

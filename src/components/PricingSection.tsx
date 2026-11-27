@@ -77,7 +77,7 @@ const mainTickets: MainTicket[] = [
       },
       {
         lead: "Programação completa de comunhão:",
-        rest: " Louvorzão Ranchão, gincanas e noites de companheirismo e louvor",
+        rest: " Louvorzão/Ranchão, gincanas e noites de companheirismo e louvor",
       },
     ],
     ctaLabel: "Garantir Ingresso Ouro VIP",
@@ -106,7 +106,7 @@ const mainTickets: MainTicket[] = [
       },
       {
         lead: "Programação completa de comunhão:",
-        rest: " Louvorzão Ranchão, gincanas e noites de companheirismo e louvor",
+        rest: " Louvorzão/Ranchão, gincanas e noites de companheirismo e louvor",
       },
     ],
     warning: {
@@ -518,7 +518,7 @@ const PricingSection = () => {
             ))}
           </div>
           <p className="font-body text-xs text-muted-foreground sm:text-sm">
-            Pagamento seguro no checkout oficial Eisme.
+            Pagamento seguro no site oficial de inscrição Eisme.
           </p>
         </motion.div>
 

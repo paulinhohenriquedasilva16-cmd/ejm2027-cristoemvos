@@ -5,7 +5,7 @@ const STATS = [
   { value: 3, label: "Dias de imersão" },
   { value: 9, label: "Refeições já pagas" },
   { value: 3, label: "Cultos especiais" },
-  { value: 1, label: "Louvorzão no Ranchão" },
+  { value: 1, label: "Louvorzão/Ranchão" },
 ];
 
 const Counter = ({ to }: { to: number }) => {

@@ -39,7 +39,7 @@ export function recommend(
   const installment = isVip ? "3x de R$ 200,00 sem juros" : "3x de R$ 160,00 sem juros";
   const bullets = isVip
     ? ["Cama nos alojamentos (sexta a domingo)", "Todas as 9 refeições + 100% dos cultos"]
-    : ["Todas as 9 refeições inclusas", "100% dos cultos, Louvorzão e gincanas"];
+    : ["Todas as 9 refeições inclusas", "100% dos cultos, Louvorzão/Ranchão e gincanas"];
   const notes: Record<Who, string> = {
     amigos: "Chame a galera para garantir junto e viver tudo lado a lado.",
     caravana: "Fale com nossa equipe de caravanas no WhatsApp para alinhar a chegada.",

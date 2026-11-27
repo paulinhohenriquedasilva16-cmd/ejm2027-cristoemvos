@@ -74,10 +74,15 @@ describe("unified analytics dispatcher", () => {
       expect.objectContaining({ eventID: expect.stringMatching(/^ic_/) })
     );
 
-    // Official group uses custom Meta event (not standard Lead)
+    // Official group and social crew share use custom Meta events (not standard Lead)
     trackEvent("whatsapp_click", { channel: "official_group" });
     expect(fbqSpy).toHaveBeenCalledWith("trackCustom", "JoinWhatsAppGroup", {
       channel: "official_group",
+    });
+
+    trackEvent("whatsapp_click", { channel: "share_crew" });
+    expect(fbqSpy).toHaveBeenCalledWith("trackCustom", "ShareCrewWhatsApp", {
+      channel: "share_crew",
     });
 
     // Dynamic product_id & product_name on future store SKUs
@@ -96,7 +101,7 @@ describe("unified analytics dispatcher", () => {
       })
     );
 
-    // GA4 accommodation view_item uses items array
+    // GA4 accommodation view_item uses nested ecommerce.items array for GTM Data Layer
     trackEvent("view_accommodation", {
       accommodation_id: "alojamento-jundiai",
       accommodation_name: "Alojamento Jundiaí",
@@ -107,12 +112,14 @@ describe("unified analytics dispatcher", () => {
       expect.arrayContaining([
         expect.objectContaining({
           event: "view_item",
-          items: [
-            expect.objectContaining({
-              item_id: "alojamento-jundiai",
-              item_name: "Alojamento Jundiaí",
-            }),
-          ],
+          ecommerce: expect.objectContaining({
+            items: [
+              expect.objectContaining({
+                item_id: "alojamento-jundiai",
+                item_name: "Alojamento Jundiaí",
+              }),
+            ],
+          }),
         }),
       ])
     );

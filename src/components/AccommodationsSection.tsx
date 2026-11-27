@@ -396,7 +396,7 @@ const AccommodationsSection = () => {
         >
           <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
             <h3 className="font-display text-sm text-foreground md:text-base">
-              Quartos Privativos para Casais e Famílias (Upgrade à parte)
+              Quartos Privativos para Casais e Famílias (Opcional à parte)
             </h3>
             <span className="rounded-full bg-destructive/10 px-3 py-1 font-body text-xs font-semibold text-destructive">
               CH.C esgotado · Poucas unidades restantes
