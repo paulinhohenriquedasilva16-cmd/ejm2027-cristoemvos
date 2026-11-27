@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   AlertCircle,
@@ -8,6 +8,7 @@ import {
   CreditCard,
   MessageCircle,
   QrCode,
+  Share2,
   Sparkles,
   UtensilsCrossed,
 } from "lucide-react";
@@ -17,9 +18,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
-const CHECKOUT_URL = "https://eisme.com.br/evento/ejm2027";
-const CARAVAN_WHATSAPP_URL = "https://wa.me/5515998162393";
+import CheckoutLink from "@/components/CheckoutLink";
+import PassportQuiz from "@/components/PassportQuiz";
+import { getQuizMatch, onQuizMatch, type AdultTicketId } from "@/lib/quizBus";
+import { trackEvent } from "@/lib/analytics";
+import type { TicketSkuId } from "@/lib/analytics/types";
+import { WHATSAPP_URLS } from "@/lib/checkout";
 
 type BenefitItem = {
   lead: string;
@@ -27,7 +31,7 @@ type BenefitItem = {
 };
 
 type MainTicket = {
-  id: string;
+  id: TicketSkuId;
   badge: string;
   title: string;
   subtitle: string;
@@ -35,6 +39,7 @@ type MainTicket = {
   priceCents: string;
   installmentHighlight: string;
   installmentSecondary: string;
+  valueAnchor: string;
   benefits: BenefitItem[];
   warning?: {
     lead: string;
@@ -49,13 +54,14 @@ const mainTickets: MainTicket[] = [
   {
     id: "ouro-vip",
     badge: "Experiência Completa • Vagas Limitadas",
-    title: "1º Lote – Ouro VIP",
+    title: "1º Lote - Ouro VIP",
     subtitle:
       "A experiência completa do EJM 2027, com hospedagem e sem preocupações. Ideal para caravanas e cidades vizinhas.",
     priceInt: "599",
     priceCents: ",99",
     installmentHighlight: "em até 3x de R$ 200,00 sem juros",
     installmentSecondary: "ou até 12x de R$ 56,05 no cartão",
+    valueAnchor: "Equivale a R$ 200/dia com cama, 9 refeições e toda a programação.",
     benefits: [
       {
         lead: "Acomodação completa",
@@ -71,23 +77,24 @@ const mainTickets: MainTicket[] = [
       },
       {
         lead: "Programação completa de comunhão:",
-        rest: " Louvorzão Ranchão, gincanas e noites de companheirismo e louvor",
+        rest: " Louvorzão/Ranchão, gincanas e noites de companheirismo e louvor",
       },
     ],
     ctaLabel: "Garantir Ingresso Ouro VIP",
-    microcopy: "Vagas de acomodação limitadas neste lote.",
+    microcopy: "Vagas de acomodação limitadas · Site oficial de inscrição · Reembolso garantido em 7 dias",
     featured: true,
   },
   {
     id: "ouro-sem-acomodacao",
-    badge: "Ideal para Sorocaba e Região",
-    title: "1º Lote – Ouro SEM ACOMODAÇÃO",
+    badge: "Ideal para Quem quer aproveitar sem ficar no local",
+    title: "1º Lote - Ouro SEM ACOMODAÇÃO",
     subtitle:
       "Viva toda a intensidade do EJM 2027 voltando para casa ou hotel à noite.",
     priceInt: "480",
     priceCents: ",00",
     installmentHighlight: "em até 3x de R$ 160,00 sem juros",
     installmentSecondary: "ou até 12x de R$ 44,84 no cartão",
+    valueAnchor: "Economize R$ 119,99 se você já tem onde dormir na região.",
     benefits: [
       {
         lead: "Alimentação completa inclusa (9 refeições)",
@@ -99,7 +106,7 @@ const mainTickets: MainTicket[] = [
       },
       {
         lead: "Programação completa de comunhão:",
-        rest: " Louvorzão Ranchão, gincanas e noites de companheirismo e louvor",
+        rest: " Louvorzão/Ranchão, gincanas e noites de companheirismo e louvor",
       },
     ],
     warning: {
@@ -107,13 +114,13 @@ const mainTickets: MainTicket[] = [
       rest: " hospedagem/pernoite no local",
     },
     ctaLabel: "Garantir Ingresso Sem Acomodação",
-    microcopy: "Aproveite o valor promocional de 1º Lote.",
+    microcopy: "Valor promocional de 1º Lote · Site oficial de inscrição · Devolução garantida em 7 dias",
     featured: false,
   },
 ];
 
 type ChildPackage = {
-  id: string;
+  id: TicketSkuId;
   ageLabel: string;
   priceInt: string;
   priceCents: string;
@@ -128,11 +135,11 @@ const childPackages: ChildPackage[] = [
     ageLabel: "De 5 a 10 anos",
     priceInt: "359",
     priceCents: ",99",
-    note: "R$ 239,99 de desconto aplicado no checkout",
+    note: "Adicionado junto ao ingresso do responsável · Desconto automático pela data de nascimento",
     benefits: [
       "Entrada nos 3 dias do encontro",
       "Todas as 9 refeições inclusas",
-      "Hospedagem em alojamento compartilhado",
+      "Alojamento incluso quando vinculado a responsável no Ouro VIP",
       "Prédios exclusivos para famílias",
     ],
   },
@@ -142,11 +149,11 @@ const childPackages: ChildPackage[] = [
     priceInt: "Grátis",
     priceCents: "",
     free: true,
-    note: "Desconto integral no checkout • Necessário responsável",
+    note: "Adicionado junto ao ingresso do responsável · Desconto integral automático na inscrição",
     benefits: [
       "Entrada nos 3 dias do encontro",
       "Todas as 9 refeições inclusas",
-      "Hospedagem em alojamento compartilhado",
+      "Alojamento incluso quando vinculado a responsável no Ouro VIP",
       "Prédios exclusivos para famílias",
     ],
   },
@@ -170,12 +177,16 @@ const mealSchedule = [
 const payments = [
   { icon: QrCode, label: "Pix" },
   { icon: Barcode, label: "Boleto" },
-  { icon: CreditCard, label: "Cartão de Crédito" },
+  { icon: CreditCard, label: "Cartão em até 3x sem juros" },
 ];
 
 const PricingSection = () => {
+  const [quizMatch, setQuizMatch] = useState<AdultTicketId | null>(() => getQuizMatch());
+
+  useEffect(() => onQuizMatch(setQuizMatch), []);
+
   return (
-    <section id="inscricao" className="section-padding bg-background">
+    <section id="inscricao" className="section-padding scroll-mt-20 bg-background">
       <div className="mx-auto max-w-5xl">
         {/* Header */}
         <motion.div
@@ -185,17 +196,19 @@ const PricingSection = () => {
           transition={{ duration: 0.7 }}
           className="mx-auto mb-10 max-w-2xl text-center md:mb-12"
         >
-          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.15em] text-primary">
-            <Sparkles className="h-3.5 w-3.5" />
-            Passaporte EJM 2027
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/5 px-4 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.15em] text-primary-ink">
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            1º Lote Aberto · Passaporte EJM 2027
           </span>
           <h2 className="mb-4 font-display text-2xl text-foreground md:text-4xl">
-            <span className="gradient-text">Inscrição</span>
+            Garanta sua <span className="gradient-text">Inscrição</span>
           </h2>
           <p className="font-body text-sm text-muted-foreground sm:text-base">
-            Escolha a modalidade ideal para você e garanta sua vaga no 1º Lote com o melhor preço!
+            Escolha a modalidade ideal para você e aproveite o valor promocional de 1º Lote com parcelamento em até 3x sem juros.
           </p>
         </motion.div>
+
+        <PassportQuiz />
 
         {/* Main 2-tier comparison cards */}
         <div className="grid grid-cols-1 items-stretch gap-6 md:grid-cols-2 lg:gap-8">
@@ -215,12 +228,18 @@ const PricingSection = () => {
                     className={
                       ticket.featured
                         ? "inline-flex items-center gap-1.5 rounded-full gradient-bg px-3.5 py-1.5 font-body text-[11px] font-bold uppercase tracking-wider text-primary-foreground"
-                        : "inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 px-3.5 py-1.5 font-body text-[11px] font-bold uppercase tracking-wider text-primary"
+                        : "inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/5 px-3.5 py-1.5 font-body text-[11px] font-bold uppercase tracking-wider text-primary-ink"
                     }
                   >
-                    {ticket.featured && <Sparkles className="h-3.5 w-3.5 shrink-0" />}
+                    {ticket.featured && <Sparkles className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />}
                     <span>{ticket.badge}</span>
                   </span>
+                  {quizMatch === ticket.id && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-graphite px-3 py-1 font-body text-[11px] font-bold uppercase tracking-wider text-orange-300">
+                      <Sparkles className="h-3 w-3" aria-hidden="true" />
+                      Indicado para você
+                    </span>
+                  )}
                 </div>
 
                 {/* Title & subtitle */}
@@ -244,11 +263,14 @@ const PricingSection = () => {
                       {ticket.priceCents}
                     </span>
                   </div>
-                  <p className="mt-2.5 font-body text-xs font-semibold text-primary sm:text-sm">
+                  <p className="mt-2.5 font-body text-xs font-semibold text-primary-ink sm:text-sm">
                     {ticket.installmentHighlight}
                   </p>
                   <p className="mt-0.5 font-body text-xs text-muted-foreground">
                     {ticket.installmentSecondary}
+                  </p>
+                  <p className="mt-2 border-t border-border/70 pt-2 font-body text-[11px] text-muted-foreground">
+                    {ticket.valueAnchor}
                   </p>
                 </div>
 
@@ -259,7 +281,7 @@ const PricingSection = () => {
                   {ticket.benefits.map((benefit, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                        <Check className="h-3 w-3 text-primary" strokeWidth={3} />
+                        <Check className="h-3 w-3 text-primary-ink" strokeWidth={3} aria-hidden="true" />
                       </span>
                       <span className="leading-snug">
                         <strong className="font-semibold text-foreground">{benefit.lead}</strong>
@@ -271,9 +293,9 @@ const PricingSection = () => {
 
                 {/* Non-included warning for Sem Acomodação */}
                 {ticket.warning && (
-                  <div className="mb-6 flex items-start gap-2.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3.5 py-3 text-left font-body text-xs sm:text-sm">
-                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
-                    <span className="leading-snug text-foreground/85">
+                  <div className="mb-6 flex items-start gap-2.5 rounded-xl border border-amber-500/35 bg-amber-500/10 px-3.5 py-3 text-left font-body text-xs sm:text-sm">
+                    <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" aria-hidden="true" />
+                    <span className="leading-snug text-foreground/90">
                       <strong className="font-semibold text-foreground">{ticket.warning.lead}</strong>
                       {ticket.warning.rest}
                     </span>
@@ -282,19 +304,18 @@ const PricingSection = () => {
 
                 {/* CTA button */}
                 <div className="mt-auto">
-                  <a
-                    href={CHECKOUT_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <CheckoutLink
+                    source="pricing_card"
+                    ticketId={ticket.id}
                     className={
                       ticket.featured
-                        ? "inline-flex w-full min-h-[48px] items-center justify-center gap-2 rounded-full gradient-bg px-5 py-3.5 text-center font-body text-sm font-bold text-primary-foreground transition-all duration-300 hover:gap-3 hover:opacity-95"
-                        : "inline-flex w-full min-h-[48px] items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-5 py-3.5 text-center font-body text-sm font-bold text-primary transition-all duration-300 hover:gap-3 hover:bg-primary hover:text-primary-foreground"
+                        ? "group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full gradient-bg px-5 py-3.5 text-center font-body text-sm font-bold text-primary-foreground transition-opacity duration-200 hover:opacity-95 active:scale-[0.98]"
+                        : "group inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary bg-transparent px-5 py-3.5 text-center font-body text-sm font-bold text-primary-ink transition-colors duration-200 hover:bg-primary-ink hover:text-primary-foreground active:scale-[0.98]"
                     }
                   >
                     <span>{ticket.ctaLabel}</span>
-                    <ArrowRight className="h-4 w-4 shrink-0" />
-                  </a>
+                    <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+                  </CheckoutLink>
                   <p className="mt-3 text-center font-body text-xs italic text-muted-foreground">
                     {ticket.microcopy}
                   </p>
@@ -336,15 +357,28 @@ const PricingSection = () => {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mx-auto mt-8 max-w-3xl"
         >
-          <Accordion type="single" collapsible>
+          <Accordion
+            type="single"
+            collapsible
+            onValueChange={(value) => {
+              if (value === "refeicoes") {
+                trackEvent("accordion_toggle", {
+                  scope: "pricing_meals",
+                  item_id: "refeicoes",
+                  label: "O que está incluso na alimentação (9 refeições)?",
+                  open: true,
+                });
+              }
+            }}
+          >
             <AccordionItem
               value="refeicoes"
               className="rounded-2xl border border-border bg-muted/50 px-5 transition-colors data-[state=open]:border-primary/35 sm:px-6"
             >
-              <AccordionTrigger className="py-4 text-left font-body text-sm font-semibold text-foreground hover:text-primary hover:no-underline sm:text-base">
+              <AccordionTrigger className="py-4 text-left font-body text-sm font-semibold text-foreground hover:text-primary-ink hover:no-underline sm:text-base">
                 <span className="flex items-center gap-3 pr-2">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <UtensilsCrossed className="h-4 w-4" />
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary-ink">
+                    <UtensilsCrossed className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <span>
                     <span className="block">O que está incluso na alimentação (9 refeições)?</span>
@@ -361,7 +395,7 @@ const PricingSection = () => {
                       key={item.day}
                       className="rounded-xl border border-border/80 bg-card p-3.5 font-body"
                     >
-                      <p className="mb-1 text-xs font-bold uppercase tracking-wider text-primary">
+                      <p className="mb-1 text-xs font-bold uppercase tracking-wider text-primary-ink">
                         {item.day}
                       </p>
                       <p className="text-xs leading-relaxed text-muted-foreground sm:text-sm">
@@ -375,20 +409,23 @@ const PricingSection = () => {
           </Accordion>
         </motion.div>
 
-        {/* Children discounts (existing age-based packages, equal neutral weight) */}
+        {/* Children discounts (equal neutral visual weight per AGENTS.md) */}
         <motion.div
+          id="desconto-infantil"
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="mt-10 md:mt-12"
+          className="mt-10 scroll-mt-24 md:mt-12"
         >
           <div className="mb-6 text-center">
             <h3 className="mb-1.5 font-display text-base text-foreground sm:text-lg">
-              Descontos para <span className="gradient-text">Crianças</span>
+              Descontos Automáticos para <span className="text-primary-ink">Crianças</span>
             </h3>
-            <p className="font-body text-xs text-muted-foreground sm:text-sm">
-              O desconto é aplicado automaticamente no checkout com base na data de nascimento.
+            <p className="mx-auto max-w-2xl font-body text-xs text-muted-foreground sm:text-sm">
+              Não precisa comprar separado nem usar cupom: tudo é feito na{" "}
+              <strong className="font-semibold text-foreground">mesma página de inscrição dos ingressos</strong>.
+              Ao informar a data de nascimento da criança, o desconto entra automaticamente no ingresso.
             </p>
           </div>
 
@@ -401,17 +438,17 @@ const PricingSection = () => {
               >
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div>
-                    <span className="mb-1.5 inline-block rounded-full border border-primary/25 bg-primary/5 px-3 py-1 font-body text-[11px] font-bold uppercase tracking-wider text-primary">
-                      Infantil
+                    <span className="mb-1.5 inline-block rounded-full border border-primary/25 bg-primary/5 px-3 py-1 font-body text-[11px] font-bold uppercase tracking-wider text-primary-ink">
+                      Desconto automático
                     </span>
-                    <p className="font-display text-sm text-foreground sm:text-base">
+                    <h4 className="font-display text-sm text-foreground sm:text-base">
                       {pkg.ageLabel}
-                    </p>
+                    </h4>
                   </div>
 
                   <div className="text-right">
                     {pkg.free ? (
-                      <span className="font-display text-2xl leading-none gradient-text sm:text-3xl">
+                      <span className="font-display text-2xl leading-none text-primary-ink sm:text-3xl">
                         {pkg.priceInt}
                       </span>
                     ) : (
@@ -427,7 +464,7 @@ const PricingSection = () => {
                         </span>
                       </div>
                     )}
-                    <span className="mt-1 block font-body text-[11px] font-semibold uppercase tracking-wide text-primary">
+                    <span className="mt-1 block font-body text-[11px] font-semibold uppercase tracking-wide text-primary-ink">
                       1º Lote
                     </span>
                   </div>
@@ -435,28 +472,29 @@ const PricingSection = () => {
 
                 <p className="mb-4 font-body text-xs text-muted-foreground">{pkg.note}</p>
 
-                <ul className="mb-5 flex-grow space-y-2 font-body text-xs text-muted-foreground sm:text-sm">
+                <ul className="flex-grow space-y-2 font-body text-xs text-muted-foreground sm:text-sm">
                   {pkg.benefits.map((benefit, i) => (
                     <li key={i} className="flex items-start gap-2.5">
                       <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                        <Check className="h-2.5 w-2.5 text-primary" strokeWidth={3} />
+                        <Check className="h-2.5 w-2.5 text-primary-ink" strokeWidth={3} aria-hidden="true" />
                       </span>
                       <span>{benefit}</span>
                     </li>
                   ))}
                 </ul>
-
-                <a
-                  href={CHECKOUT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto inline-flex w-full min-h-[44px] items-center justify-center gap-2 rounded-full border border-primary/35 bg-primary/5 px-4 py-2.5 font-body text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground sm:text-sm"
-                >
-                  Garantir Passaporte Infantil
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </a>
               </div>
             ))}
+          </div>
+
+          <div className="mt-5 text-center">
+            <CheckoutLink
+              source="pricing_child"
+              ticketId="geral"
+              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-primary/40 bg-primary/5 px-6 py-2.5 font-body text-xs font-bold text-primary-ink transition-colors hover:bg-primary-ink hover:text-primary-foreground sm:text-sm"
+            >
+              <span>Fazer inscrição na mesma página dos ingressos</span>
+              <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </CheckoutLink>
           </div>
         </motion.div>
 
@@ -474,17 +512,17 @@ const PricingSection = () => {
                 key={p.label}
                 className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 font-body text-xs font-medium text-foreground sm:text-sm"
               >
-                <p.icon className="h-4 w-4 text-primary" />
+                <p.icon className="h-4 w-4 text-primary-ink" aria-hidden="true" />
                 {p.label}
               </span>
             ))}
           </div>
           <p className="font-body text-xs text-muted-foreground sm:text-sm">
-            Pagamento seguro direto no checkout oficial.
+            Pagamento seguro no site oficial de inscrição Eisme.
           </p>
         </motion.div>
 
-        {/* Caravans / Support footer strip */}
+        {/* Caravans / Support & Share with Parents footer strip */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -492,19 +530,33 @@ const PricingSection = () => {
           transition={{ duration: 0.6 }}
           className="mx-auto mt-8 max-w-2xl text-center"
         >
-          <p className="mb-3 font-body text-sm text-muted-foreground">
+          <p className="mb-4 font-body text-sm text-muted-foreground">
             Vai trazer uma caravana ou ficou com alguma dúvida sobre os ingressos? Fale com a nossa equipe no WhatsApp.
           </p>
-          <a
-            href={CARAVAN_WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 font-body text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
-            style={{ boxShadow: "var(--shadow-card)" }}
-          >
-            <MessageCircle className="h-4 w-4 text-primary" />
-            Falar no WhatsApp
-          </a>
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <a
+              href={WHATSAPP_URLS.caravans}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent("whatsapp_click", { channel: "caravans" })}
+              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-border bg-card px-5 py-2.5 font-body text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary-ink sm:w-auto"
+              style={{ boxShadow: "var(--shadow-card)" }}
+            >
+              <MessageCircle className="h-4 w-4 text-primary-ink" aria-hidden="true" />
+              Falar no WhatsApp
+            </a>
+
+            <a
+              href={WHATSAPP_URLS.parentsShare}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent("whatsapp_click", { channel: "share_parents" })}
+              className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border border-border bg-muted/60 px-5 py-2.5 font-body text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary-ink sm:w-auto"
+            >
+              <Share2 className="h-4 w-4 text-primary-ink" aria-hidden="true" />
+              Enviar resumo para meus pais
+            </a>
+          </div>
         </motion.div>
       </div>
     </section>
@@ -512,3 +564,4 @@ const PricingSection = () => {
 };
 
 export default PricingSection;
+

@@ -6,7 +6,7 @@ const LoteBanner = () => {
       <div className="flex items-center justify-center gap-2 text-primary-foreground font-body text-xs sm:text-sm">
         <Bell className="w-4 h-4 animate-pulse" />
         <span className="font-semibold">1º LOTE ENCERRADO</span>
-        <span className="hidden sm:inline">—</span>
+        <span className="hidden sm:inline">•</span>
         <span>2º Lote em breve! Fique atento.</span>
       </div>
     </div>

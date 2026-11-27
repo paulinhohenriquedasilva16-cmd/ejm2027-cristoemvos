@@ -1,29 +1,19 @@
-import { describe, it, expect, beforeAll } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import PricingSection from "@/components/PricingSection";
-
-beforeAll(() => {
-  class MockIntersectionObserver implements IntersectionObserver {
-    readonly root: Element | null = null;
-    readonly rootMargin: string = "";
-    readonly thresholds: ReadonlyArray<number> = [];
-    disconnect() {}
-    observe() {}
-    takeRecords(): IntersectionObserverEntry[] {
-      return [];
-    }
-    unobserve() {}
-  }
-
-  global.IntersectionObserver = MockIntersectionObserver;
-});
+import { captureAttribution } from "@/lib/attribution";
 
 describe("PricingSection", () => {
+  beforeEach(() => {
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+  });
+
   it("renders Ouro VIP and Ouro SEM ACOMODAÇÃO cards with VIP first and verified prices", () => {
     render(<PricingSection />);
 
-    const vipHeading = screen.getByRole("heading", { name: /1º Lote – Ouro VIP/i });
-    const noAccHeading = screen.getByRole("heading", { name: /1º Lote – Ouro SEM ACOMODAÇÃO/i });
+    const vipHeading = screen.getByRole("heading", { name: /1º Lote - Ouro VIP/i });
+    const noAccHeading = screen.getByRole("heading", { name: /1º Lote - Ouro SEM ACOMODAÇÃO/i });
 
     expect(vipHeading).toBeInTheDocument();
     expect(noAccHeading).toBeInTheDocument();
@@ -32,7 +22,7 @@ describe("PricingSection", () => {
     ).toBeTruthy();
 
     expect(screen.getByText(/Experiência Completa • Vagas Limitadas/i)).toBeInTheDocument();
-    expect(screen.getByText(/Ideal para Sorocaba e Região/i)).toBeInTheDocument();
+    expect(screen.getByText(/Ideal para Quem quer aproveitar sem ficar no local/i)).toBeInTheDocument();
 
     expect(screen.getByText("599")).toBeInTheDocument();
     expect(screen.getByText(/em até 3x de R\$ 200,00 sem juros/i)).toBeInTheDocument();
@@ -59,20 +49,24 @@ describe("PricingSection", () => {
     expect(screen.getByText(/Café da manhã e almoço de despedida\./i)).toBeInTheDocument();
   });
 
-  it("preserves children discounts and links to checkout and caravans WhatsApp", () => {
+  it("preserves children discounts, caravans WhatsApp, share-with-parents link, and UTM propagation", () => {
+    captureAttribution("?utm_source=instagram&utm_campaign=lote1", "/", "");
     render(<PricingSection />);
 
-    expect(screen.getByText(/De 5 a 10 anos/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /De 5 a 10 anos/i })).toBeInTheDocument();
     expect(screen.getByText("359")).toBeInTheDocument();
-    expect(screen.getByText(/De 0 a 4 anos/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /De 0 a 4 anos/i })).toBeInTheDocument();
     expect(screen.getByText("Grátis")).toBeInTheDocument();
 
     const vipCta = screen.getByRole("link", { name: /Garantir Ingresso Ouro VIP/i });
     const noAccCta = screen.getByRole("link", { name: /Garantir Ingresso Sem Acomodação/i });
     const whatsappLink = screen.getByRole("link", { name: /Falar no WhatsApp/i });
+    const parentsLink = screen.getByRole("link", { name: /Enviar resumo para meus pais/i });
 
-    expect(vipCta).toHaveAttribute("href", "https://eisme.com.br/evento/ejm2027");
-    expect(noAccCta).toHaveAttribute("href", "https://eisme.com.br/evento/ejm2027");
-    expect(whatsappLink).toHaveAttribute("href", "https://wa.me/5515998162393");
+    expect(vipCta.getAttribute("href")).toContain("https://eisme.com.br/evento/ejm2027");
+    expect(vipCta.getAttribute("href")).toContain("utm_source=instagram");
+    expect(noAccCta.getAttribute("href")).toContain("utm_campaign=lote1");
+    expect(whatsappLink.getAttribute("href")).toContain("https://wa.me/5515998162393");
+    expect(parentsLink.getAttribute("href")).toContain("https://wa.me/?text=");
   });
 });
