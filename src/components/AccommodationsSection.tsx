@@ -1,6 +1,27 @@
-import { useRef, useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, Bed, Droplets, Wifi, Users, ShieldCheck, Lamp, X, Star, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
+import { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  ArrowRight,
+  Bed,
+  ChevronLeft,
+  ChevronRight,
+  Droplets,
+  Lamp,
+  MessageCircle,
+  ShieldCheck,
+  Star,
+  Users,
+  Wifi,
+} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import CheckoutLink from "@/components/CheckoutLink";
+import { trackEvent } from "@/lib/analytics";
 
 import jundiaiImg1 from "@/assets/alojamento-jundiai-1.jpg";
 import jundiaiImg2 from "@/assets/alojamento-jundiai-2.jpg";
@@ -36,6 +57,7 @@ import mapleImg6 from "@/assets/hotel-maple-6.jpg";
 import mapleImg7 from "@/assets/hotel-maple-7.jpg";
 
 interface Accommodation {
+  id: string;
   name: string;
   tag: "Inclusa no ingresso" | "Privativo · Custo adicional";
   images: string[];
@@ -46,10 +68,11 @@ interface Accommodation {
 
 const included: Accommodation[] = [
   {
+    id: "alojamento-jundiai",
     name: "Alojamento Jundiaí",
     tag: "Inclusa no ingresso",
     images: [jundiaiImg1, jundiaiImg2, jundiaiImg3, jundiaiImg4, jundiaiImg5, jundiaiImg6, jundiaiImg7],
-    description: "Alojamento coletivo com estrutura organizada e ambiente comunitário.",
+    description: "Alojamento coletivo com estrutura organizada e ambiente comunitário, incluso no Passaporte Ouro VIP.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
       { icon: Droplets, label: "Banheiros compartilhados" },
@@ -58,10 +81,11 @@ const included: Accommodation[] = [
     ],
   },
   {
+    id: "alojamento-bloco-a",
     name: "Alojamento Bloco A",
     tag: "Inclusa no ingresso",
     images: [blocoAImg1, blocoAImg2],
-    description: "Alojamento coletivo no Bloco A com infraestrutura completa.",
+    description: "Alojamento coletivo no Bloco A com infraestrutura completa, incluso no Passaporte Ouro VIP.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
       { icon: Droplets, label: "Banheiros compartilhados" },
@@ -70,10 +94,11 @@ const included: Accommodation[] = [
     ],
   },
   {
+    id: "alojamento-j",
     name: "Alojamento J",
     tag: "Inclusa no ingresso",
     images: [alojJImg1, alojJImg2, alojJImg3, alojJImg4],
-    description: "Alojamento coletivo no Bloco J, próximo às áreas de convivência.",
+    description: "Alojamento coletivo no Bloco J, próximo às áreas de convivência, incluso no Passaporte Ouro VIP.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
       { icon: Users, label: "Ambiente comunitário" },
@@ -82,10 +107,11 @@ const included: Accommodation[] = [
     ],
   },
   {
+    id: "alojamento-bloco-c",
     name: "Alojamento Bloco C",
     tag: "Inclusa no ingresso",
     images: [blocoCImg1, blocoCImg2, blocoCImg3, blocoCImg4, blocoCImg5],
-    description: "Alojamento coletivo no Bloco C com fácil acesso ao evento.",
+    description: "Alojamento coletivo no Bloco C com fácil acesso aos cultos e refeitório, incluso no Passaporte Ouro VIP.",
     amenities: [
       { icon: Bed, label: "Camas confortáveis" },
       { icon: Droplets, label: "Banheiros compartilhados" },
@@ -97,10 +123,11 @@ const included: Accommodation[] = [
 
 const upgrades: Accommodation[] = [
   {
+    id: "apartamento-ouro-cha",
     name: "Apartamento Ouro | CH.A",
     tag: "Privativo · Custo adicional",
     images: [aptoCHAImg1, aptoCHAImg2, aptoCHAImg3],
-    description: "Apartamento privativo com conforto superior para você e sua família.",
+    description: "Apartamento privativo com conforto superior para você e sua família (opção à parte na hora da inscrição).",
     amenities: [
       { icon: Bed, label: "Cama de casal" },
       { icon: Droplets, label: "Banheiro privativo" },
@@ -109,11 +136,12 @@ const upgrades: Accommodation[] = [
     ],
   },
   {
+    id: "apartamento-ouro-chc",
     name: "Apartamento Ouro | CH.C",
     tag: "Privativo · Custo adicional",
     soldOut: true,
     images: [aptoCHCImg1, aptoCHCImg2, aptoCHCImg3, aptoCHCImg4],
-    description: "Apartamento privativo no bloco C com estrutura completa.",
+    description: "Apartamento privativo no bloco C com estrutura completa. Todas as unidades desta opção já foram reservadas.",
     amenities: [
       { icon: Bed, label: "Cama de casal" },
       { icon: Droplets, label: "Banheiro privativo" },
@@ -122,10 +150,11 @@ const upgrades: Accommodation[] = [
     ],
   },
   {
+    id: "hotel-maple-village",
     name: "Hotel Maple Village",
     tag: "Privativo · Custo adicional",
     images: [mapleImg1, mapleImg2, mapleImg3, mapleImg4, mapleImg5, mapleImg6, mapleImg7],
-    description: "Hospedagem premium no Hotel Maple Village com serviço completo.",
+    description: "Hospedagem completa no Hotel Maple Village com todo conforto (opção à parte na hora da inscrição).",
     amenities: [
       { icon: Bed, label: "Cama king size" },
       { icon: Droplets, label: "Banheiro privativo" },
@@ -135,133 +164,174 @@ const upgrades: Accommodation[] = [
   },
 ];
 
-/* ── Modal image carousel ── */
-const ModalCarousel = ({ images }: { images: string[] }) => {
+/* ── On-demand Modal image carousel (renders only active slide for mobile bandwidth) ── */
+const ModalCarousel = ({ images, altPrefix }: { images: string[]; altPrefix: string }) => {
   const [current, setCurrent] = useState(0);
 
-  const next = useCallback(() => setCurrent((p) => (p + 1) % images.length), [images.length]);
-  const prev = useCallback(() => setCurrent((p) => (p - 1 + images.length) % images.length), [images.length]);
-
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const id = setInterval(next, 4000);
-    return () => clearInterval(id);
-  }, [next, images.length]);
+  const next = () => setCurrent((p) => (p + 1) % images.length);
+  const prev = () => setCurrent((p) => (p - 1 + images.length) % images.length);
 
   if (images.length === 1) {
     return (
-      <div className="aspect-video overflow-hidden">
-        <img src={images[0]} alt="" className="w-full h-full object-cover" />
+      <div className="aspect-video overflow-hidden bg-muted">
+        <img
+          src={images[0]}
+          alt={`${altPrefix} (foto 1 de 1)`}
+          decoding="async"
+          className="h-full w-full object-cover"
+        />
       </div>
     );
   }
 
   return (
-    <div className="relative aspect-video overflow-hidden">
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-          style={{ opacity: i === current ? 1 : 0 }}
-        />
-      ))}
-      {/* Arrows */}
-      <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors" aria-label="Anterior">
-        <ChevronLeft className="w-4 h-4" />
+    <div className="relative aspect-video overflow-hidden bg-muted">
+      <img
+        src={images[current]}
+        alt={`${altPrefix} (foto ${current + 1} de ${images.length})`}
+        decoding="async"
+        className="h-full w-full object-cover"
+      />
+      <button
+        type="button"
+        onClick={prev}
+        className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+        aria-label="Foto anterior"
+      >
+        <ChevronLeft className="h-5 w-5" aria-hidden="true" />
       </button>
-      <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors" aria-label="Próximo">
-        <ChevronRight className="w-4 h-4" />
+      <button
+        type="button"
+        onClick={next}
+        className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+        aria-label="Próxima foto"
+      >
+        <ChevronRight className="h-5 w-5" aria-hidden="true" />
       </button>
-      {/* Dots */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        Foto {current + 1} de {images.length}
+      </span>
+      <div className="absolute bottom-1 left-1/2 flex -translate-x-1/2 items-center gap-0.5 rounded-full bg-black/70 px-2 backdrop-blur-sm">
         {images.map((_, i) => (
           <button
             key={i}
+            type="button"
             onClick={() => setCurrent(i)}
-            className={`w-2 h-2 rounded-full transition-all ${i === current ? "bg-white w-5" : "bg-white/50"}`}
-            aria-label={`Foto ${i + 1}`}
-          />
+            className="flex min-h-[44px] min-w-[28px] items-center justify-center"
+            aria-label={`Ver foto ${i + 1} de ${images.length}`}
+            aria-current={i === current ? "true" : undefined}
+          >
+            <span
+              className={`block h-2 rounded-full transition-all ${
+                i === current ? "w-5 bg-white" : "w-2 bg-white/70"
+              }`}
+            />
+          </button>
         ))}
       </div>
     </div>
   );
 };
 
-/* ── Horizontal scroll carousel ── */
+/* ── Horizontal scroll carousel with accessible navigation ── */
 const AccCarousel = ({
   items,
+  label,
   onSelect,
 }: {
   items: Accommodation[];
+  label: string;
   onSelect: (acc: Accommodation) => void;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: number) => {
     if (!ref.current) return;
-    ref.current.scrollBy({ left: dir * 260, behavior: "smooth" });
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    ref.current.scrollBy({
+      left: dir * 260,
+      behavior: prefersReduced ? "auto" : "smooth",
+    });
   };
 
   return (
-    <div className="relative group/carousel">
-      <button
-        onClick={() => scroll(-1)}
-        className="absolute -left-3 md:-left-5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity shadow-md"
-        aria-label="Anterior"
-      >
-        <ChevronLeft className="w-4 h-4 text-foreground" />
-      </button>
-      <button
-        onClick={() => scroll(1)}
-        className="absolute -right-3 md:-right-5 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-card border border-border flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity shadow-md"
-        aria-label="Próximo"
-      >
-        <ChevronRight className="w-4 h-4 text-foreground" />
-      </button>
+    <div className="relative">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <p className="font-body text-xs text-muted-foreground md:hidden">
+          Deslize para o lado para ver todas as opções →
+        </p>
+        <div className="ml-auto flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => scroll(-1)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-colors hover:border-primary hover:text-primary-ink"
+            aria-label={`Anterior em ${label}`}
+          >
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scroll(1)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm transition-colors hover:border-primary hover:text-primary-ink"
+            aria-label={`Próximo em ${label}`}
+          >
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
 
       <div
         ref={ref}
-        className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 -mx-1 px-1"
+        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {items.map((acc) => (
           <button
-            key={acc.name}
+            key={acc.id}
+            type="button"
             onClick={() => onSelect(acc)}
-            className={`group relative flex-none w-52 sm:w-60 rounded-2xl overflow-hidden aspect-[3/4] text-left snap-start focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${acc.soldOut ? "opacity-75" : ""}`}
+            className={`group relative aspect-[3/4] w-56 flex-none snap-start overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary sm:w-60 ${
+              acc.soldOut ? "opacity-80" : ""
+            }`}
             style={{ boxShadow: "var(--shadow-card)" }}
           >
             <img
               src={acc.images[0]}
               alt={acc.name}
-              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 ${acc.soldOut ? "grayscale" : "group-hover:scale-110"}`}
               loading="lazy"
+              decoding="async"
+              className={`absolute inset-0 h-full w-full object-cover transition-transform duration-500 ${
+                acc.soldOut ? "grayscale" : "group-hover:scale-105"
+              }`}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
             {acc.soldOut && (
-              <div className="absolute inset-0 flex items-center justify-center z-[1]">
-                <span className="bg-destructive text-destructive-foreground font-display text-sm sm:text-base font-bold px-4 py-2 rounded-full -rotate-12 shadow-lg">
+              <div className="absolute inset-0 z-[1] flex items-center justify-center">
+                <span className="-rotate-12 rounded-full bg-destructive px-4 py-2 font-display text-sm font-bold text-destructive-foreground shadow-lg sm:text-base">
                   ESGOTADO
                 </span>
               </div>
             )}
             <span
-              className={`absolute top-2.5 left-2.5 text-[10px] sm:text-xs font-semibold px-2 py-1 rounded-full ${
+              className={`absolute left-2.5 top-2.5 rounded-full px-2.5 py-1 font-body text-[11px] font-semibold ${
                 acc.soldOut
-                  ? "bg-destructive/80 text-destructive-foreground"
+                  ? "bg-destructive text-destructive-foreground"
                   : acc.tag === "Privativo · Custo adicional"
-                    ? "bg-secondary text-secondary-foreground"
-                    : "bg-primary text-primary-foreground"
+                    ? "bg-graphite/90 text-white"
+                    : "gradient-bg text-primary-foreground"
               }`}
             >
               {acc.soldOut ? "Esgotado" : acc.tag}
             </span>
-            <div className="absolute bottom-0 left-0 right-0 p-3 md:p-4">
-              <h3 className="font-display text-xs sm:text-sm text-white leading-tight">
+            <div className="absolute inset-x-0 bottom-0 p-3.5 md:p-4">
+              <span className="block font-body text-sm font-bold leading-snug text-white">
                 {acc.name}
-              </h3>
+              </span>
+              <span className="mt-1 block font-body text-xs text-white/85">
+                Ver fotos e detalhes →
+              </span>
             </div>
           </button>
         ))}
@@ -274,21 +344,31 @@ const AccCarousel = ({
 const AccommodationsSection = () => {
   const [selected, setSelected] = useState<Accommodation | null>(null);
 
+  const handleSelect = (acc: Accommodation) => {
+    setSelected(acc);
+    trackEvent("view_accommodation", {
+      accommodation_id: acc.id,
+      accommodation_name: acc.name,
+      accommodation_type: acc.tag,
+      sold_out: Boolean(acc.soldOut),
+    });
+  };
+
   return (
-    <section id="acomodacoes" className="section-padding bg-background">
-      <div className="max-w-5xl mx-auto">
+    <section id="acomodacoes" className="section-padding scroll-mt-20 overflow-x-clip bg-muted/40">
+      <div className="mx-auto max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.7 }}
+          className="mb-10 text-center md:mb-12"
         >
-          <h2 className="font-display text-2xl md:text-4xl text-foreground mb-4">
-            Nossas <span className="gradient-text">Acomodações</span>
+          <h2 className="mb-4 font-display text-2xl text-foreground md:text-4xl">
+            Onde Você Vai <span className="gradient-text">Descansar</span>
           </h2>
-          <p className="font-body text-muted-foreground max-w-xl mx-auto">
-            Clique em uma acomodação para ver os detalhes.
+          <p className="mx-auto max-w-2xl font-body text-sm text-muted-foreground sm:text-base">
+            Estrutura organizada dentro da Estância Árvore da Vida para ir a pé aos cultos, descansar com segurança 24h e conviver com sua turma. Toque em uma acomodação para ver as fotos.
           </p>
         </motion.div>
 
@@ -300,10 +380,10 @@ const AccommodationsSection = () => {
           transition={{ duration: 0.5 }}
           className="mb-10"
         >
-          <h3 className="font-display text-sm md:text-base text-foreground mb-4">
-            Inclusas no ingresso
+          <h3 className="mb-2 font-display text-sm text-foreground md:text-base">
+            Inclusas no Passaporte Ouro VIP (R$ 599,99) · Vagas por ordem de inscrição
           </h3>
-          <AccCarousel items={included} onSelect={setSelected} />
+          <AccCarousel items={included} label="acomodações inclusas" onSelect={handleSelect} />
         </motion.div>
 
         {/* Upgrade carousel */}
@@ -314,102 +394,121 @@ const AccommodationsSection = () => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-10"
         >
-          <h3 className="font-display text-sm md:text-base text-foreground mb-4">
-            Quartos Privativos · Custo adicional
-          </h3>
-          <AccCarousel items={upgrades} onSelect={setSelected} />
+          <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+            <h3 className="font-display text-sm text-foreground md:text-base">
+              Quartos Privativos para Casais e Famílias (Upgrade à parte)
+            </h3>
+            <span className="rounded-full bg-destructive/10 px-3 py-1 font-body text-xs font-semibold text-destructive">
+              CH.C esgotado · Poucas unidades restantes
+            </span>
+          </div>
+          <AccCarousel items={upgrades} label="quartos privativos" onSelect={handleSelect} />
         </motion.div>
 
-        {/* Detail modal */}
-        <AnimatePresence>
-          {selected && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-              onClick={() => setSelected(null)}
-            >
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 30 }}
-                transition={{ duration: 0.3 }}
-                className="relative bg-card rounded-2xl overflow-hidden max-w-md w-full max-h-[90vh] overflow-y-auto"
-                style={{ boxShadow: "var(--shadow-warm)" }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={() => setSelected(null)}
-                  className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition-colors"
-                  aria-label="Fechar"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-
-                <ModalCarousel images={selected.images} />
+        {/* Accessible Radix Dialog modal */}
+        <Dialog open={Boolean(selected)} onOpenChange={(open) => !open && setSelected(null)}>
+          <DialogContent
+            className="max-h-[90dvh] max-w-md gap-0 overflow-y-auto overflow-x-hidden border-border bg-card p-0"
+            style={{ boxShadow: "var(--shadow-warm)" }}
+            closeClassName="right-2 top-2 z-10 bg-black/60 text-white hover:bg-black/80 opacity-100"
+          >
+            {selected && (
+              <>
+                <ModalCarousel
+                  key={selected.id}
+                  images={selected.images}
+                  altPrefix={selected.name}
+                />
 
                 <div className="p-5 md:p-6">
-                  <span
-                    className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3 ${
-                      selected.tag === "Privativo · Custo adicional"
-                        ? "bg-secondary/20 text-secondary"
-                        : "bg-primary/20 text-primary"
-                    }`}
-                  >
-                    {selected.tag}
-                  </span>
-                  <h3 className="font-display text-base md:text-lg text-foreground mb-2">
-                    {selected.name}
-                  </h3>
-                  <p className="font-body text-muted-foreground text-sm mb-5">
-                    {selected.description}
-                  </p>
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <DialogHeader className="mb-4 space-y-2 text-left">
+                    <span
+                      className={`inline-block w-fit rounded-full px-3 py-1 font-body text-xs font-semibold ${
+                        selected.soldOut
+                          ? "bg-destructive/15 text-destructive"
+                          : selected.tag === "Privativo · Custo adicional"
+                            ? "bg-amber-100 text-amber-950"
+                            : "bg-orange-100 text-orange-950"
+                      }`}
+                    >
+                      {selected.soldOut ? "Esgotado" : selected.tag}
+                    </span>
+                    <DialogTitle className="font-display text-base text-foreground md:text-lg">
+                      {selected.name}
+                    </DialogTitle>
+                    <DialogDescription className="font-body text-sm text-muted-foreground">
+                      {selected.description}
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <div className="mb-6 grid grid-cols-2 gap-2.5">
                     {selected.amenities.map((a) => (
                       <div
                         key={a.label}
                         className="flex items-center gap-2 rounded-xl bg-muted p-2.5"
                       >
-                        <a.icon className="w-4 h-4 text-primary shrink-0" />
+                        <a.icon className="h-4 w-4 shrink-0 text-primary-ink" aria-hidden="true" />
                         <span className="font-body text-xs text-foreground">{a.label}</span>
                       </div>
                     ))}
                   </div>
+
+                  {selected.soldOut ? (
+                    <a
+                      href="#suporte"
+                      onClick={() => setSelected(null)}
+                      className="inline-flex min-h-[44px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-5 py-2.5 font-body text-sm font-bold text-primary-ink transition-colors hover:bg-primary hover:text-primary-foreground"
+                    >
+                      <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                      Consultar outras opções com o suporte
+                    </a>
+                  ) : (
+                    <CheckoutLink
+                      source="accommodation_modal"
+                      ticketId="ouro-vip"
+                      accommodationName={selected.name}
+                      className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full gradient-bg px-5 py-3 font-body text-sm font-bold text-primary-foreground transition-opacity hover:opacity-95"
+                    >
+                      <span>
+                        {selected.tag === "Privativo · Custo adicional"
+                          ? "Ver disponibilidade na página de inscrição"
+                          : "Garantir Passaporte Ouro VIP"}
+                      </span>
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </CheckoutLink>
+                  )}
                 </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-10 text-center rounded-2xl bg-muted p-6 md:p-8 max-w-2xl mx-auto"
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="mx-auto mt-10 max-w-2xl rounded-2xl border border-border bg-card p-6 text-center md:p-8"
           style={{ boxShadow: "var(--shadow-card)" }}
         >
-          <p className="font-body text-muted-foreground text-sm md:text-base leading-relaxed mb-5">
-            Ficou em dúvida sobre os <strong className="text-foreground">quartos privativos</strong>? Consulte os valores no checkout ou fale com o nosso suporte.
+          <p className="mb-5 font-body text-sm leading-relaxed text-muted-foreground md:text-base">
+            Vai em família, casal ou quer fechar um quarto com sua igreja? Compare os passaportes abaixo ou fale com nossa equipe.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href="https://eisme.com.br/evento/ejm2027"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 gradient-bg text-primary-foreground font-semibold px-6 py-3 rounded-full hover:opacity-90 transition-opacity text-sm"
+              href="#inscricao"
+              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full gradient-bg px-6 py-3 font-body text-sm font-bold text-primary-foreground transition-opacity hover:opacity-95 sm:w-auto"
             >
-              <ExternalLink className="w-4 h-4" />
-              Ver no checkout
+              <span>Escolher Meu Passaporte</span>
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </a>
             <a
               href="#suporte"
-              className="inline-flex items-center gap-2 border-2 border-primary text-primary font-semibold px-6 py-3 rounded-full hover:bg-primary/10 transition-colors text-sm"
+              className="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-full border-2 border-primary px-6 py-3 font-body text-sm font-bold text-primary-ink transition-colors hover:bg-primary hover:text-primary-foreground sm:w-auto"
             >
-              <MessageCircle className="w-4 h-4" />
-              Falar com o suporte
+              <MessageCircle className="h-4 w-4" aria-hidden="true" />
+              Tirar dúvida de quarto
             </a>
           </div>
         </motion.div>

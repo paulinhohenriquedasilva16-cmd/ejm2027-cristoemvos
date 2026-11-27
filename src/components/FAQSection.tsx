@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -5,114 +6,192 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { motion } from "framer-motion";
+import CheckoutLink from "@/components/CheckoutLink";
+import { trackEvent } from "@/lib/analytics";
 
-const faqs = [
+type FaqCategory = "tudo" | "ingressos" | "hospedagem" | "familia";
+
+interface FaqEntry {
+  category: Exclude<FaqCategory, "tudo">;
+  question: string;
+  answer: string;
+}
+
+const FAQ_FILTERS: { id: FaqCategory; label: string }[] = [
+  { id: "tudo", label: "Tudo" },
+  { id: "ingressos", label: "Ingressos e Pagamento" },
+  { id: "hospedagem", label: "Hospedagem e Refeições" },
+  { id: "familia", label: "Caravanas e Família" },
+];
+
+const faqs: FaqEntry[] = [
   {
+    category: "hospedagem",
     question: "Onde será realizado o evento?",
     answer:
-      "O EJM 2027 acontecerá na Estância Árvore da Vida, um local preparado com muito carinho e dedicação para que você receba o melhor de Deus com todo o conforto.",
+      "O EJM 2027 acontecerá na Estância Árvore da Vida, em Sumaré-SP (Estr. Estância Árvore da Vida, 01, CEP 13176-050), um local preparado com estrutura completa para receber jovens, famílias e caravanas.",
   },
   {
+    category: "ingressos",
     question: "Quando acontece o EJM 2027?",
     answer:
-      "Nos dias 15, 16 e 17 de janeiro de 2027. Serão 3 dias de muitas bênçãos onde a sua única preocupação será ouvir a voz de Deus e viver momentos inesquecíveis na presença Dele.",
+      "Nos dias 15, 16 e 17 de janeiro de 2027 (sexta a domingo). Serão 3 dias intensos de cultos, louvor, comunhão e 9 refeições inclusas.",
   },
   {
-    question: "O que o meu Passaporte (R$ 599,99) inclui?",
+    category: "ingressos",
+    question: "Qual a diferença entre os dois Passaportes do 1º Lote (Ouro VIP e Sem Acomodação)?",
     answer:
-      "Transparência total! O valor de R$ 599,99 é o seu pacote padrão completo. Ele inclui:\n\n✅ Entrada nos 3 dias do encontro\n✅ Todas as 9 refeições\n✅ Sua cama no alojamento compartilhado\n\nVocê não paga absolutamente nada a mais por isso.\n\n⚠️ As vagas nas camas são limitadas. Quem compra primeiro, escolhe o quarto primeiro!",
+      "Você escolhe a opção ideal para sua realidade:\n\n✅ 1º Lote - Ouro VIP (R$ 599,99 ou até 3x de R$ 200,00 sem juros): inclui entrada nos 3 dias, todas as 9 refeições e sua cama nos alojamentos compartilhados (sexta a domingo).\n✅ 1º Lote - Ouro SEM ACOMODAÇÃO (R$ 480,00 ou até 3x de R$ 160,00 sem juros): inclui entrada nos 3 dias e todas as 9 refeições, sem pernoite no local (ideal para quem quer aproveitar todo o encontro sem ficar hospedado na Estância).\n\n⚠️ As vagas nas camas do Ouro VIP são limitadas. Quem garante antes assegura seu alojamento primeiro!",
   },
   {
-    question: "Crianças pagam ingresso?",
+    category: "familia",
+    question: "Crianças pagam ingresso? Preciso pedir cupom?",
     answer:
-      "👶 Crianças de 0 a 4 anos: não pagam!\n\n👧 Crianças de 5 a 10 anos: pagam apenas uma taxa reduzida para cobrir alimentação e estadia.\n\n🧑 A partir de 11 anos: valor normal do ingresso.\n\n📲 Entre em contato com nossa equipe no WhatsApp antes de finalizar a compra para receber os detalhes e liberar seu cupom de desconto!",
+      "Não precisa comprar separado nem pedir cupom! Tudo é feito na mesma página de inscrição dos ingressos: basta informar a data de nascimento da criança que o desconto entra automaticamente:\n\n👶 De 0 a 4 anos: entrada e alimentação gratuitas (necessário estar vinculada a um responsável pagante).\n👧 De 5 a 10 anos: tarifa infantil de R$ 359,99 no 1º Lote (com as 9 refeições e hospedagem em prédio exclusivo para famílias).\n🧑 A partir de 11 anos: valor integral do passaporte escolhido.",
   },
   {
-    question: "O ingresso inclui hospedagem?",
+    category: "hospedagem",
+    question: "Como funciona a hospedagem e os quartos privativos?",
     answer:
-      "Sim! O seu Passaporte já inclui hospedagem nos alojamentos compartilhados. Famílias e grupos podem se organizar para fechar quartos inteiros de beliches sem nenhuma taxa extra.\n\nPara casais ou famílias que preferem total privacidade, oferecemos opções de quartos de hotel (com a diária do quarto paga à parte no site). Você não precisa se preocupar em procurar hotel na cidade e ficar distante do local do EJM.",
+      "A hospedagem nos alojamentos compartilhados está inclusa no Passaporte Ouro VIP (R$ 599,99), com prédios exclusivos para moços, moças e famílias. O Passaporte Ouro Sem Acomodação (R$ 480,00) não inclui pernoite.\n\nPara casais ou famílias que preferem privacidade total, oferecemos opções de apartamentos e hotel dentro da Estância pagos à parte na hora da inscrição (atenção: o Apartamento Ouro CH.C já está esgotado).",
   },
   {
+    category: "hospedagem",
     question: "Posso escolher com quem vou dividir o quarto?",
     answer:
-      "Sim! Quer ficar com a sua turma? No momento da inscrição, vocês podem escolher dormir no mesmo quarto do alojamento. E o melhor: é a chance perfeita para conhecer jovens de todos os lugares!",
+      "Sim! Quer ficar com a sua turma ou família? No momento da inscrição (Passaporte Ouro VIP), vocês podem se organizar para ficar no mesmo quarto do alojamento sem taxa extra.",
   },
   {
-    question: "Alimentação inclusa no valor do ingresso?",
+    category: "hospedagem",
+    question: "A alimentação está inclusa nos dois ingressos?",
     answer:
-      "Sim! Todas as 9 refeições do encontro estão inclusas no valor do seu Passaporte. Você não paga nada a mais por isso.",
+      "Sim! Todas as 9 refeições do encontro estão inclusas tanto no Ouro VIP quanto no Ouro Sem Acomodação:\n\n• Sexta-feira: almoço de boas-vindas, café da tarde e jantar\n• Sábado: café da manhã, almoço, café da tarde e jantar\n• Domingo: café da manhã e almoço de despedida\n\nVocê não paga nada extra por alimentação.",
   },
   {
-    question: "Como chego ao local do evento?",
+    category: "ingressos",
+    question: "Quais as formas de pagamento e parcelamento?",
     answer:
-      "Você pode ir com veículo próprio. A Estância Árvore da Vida possui acesso facilitado e estrutura para receber participantes. Mais próximo do evento, serão disponibilizadas orientações detalhadas para facilitar a sua chegada.",
+      "Direto na página oficial de inscrição (eisme.com.br/evento/ejm2027), você pode pagar com:\n\n💳 Cartão de crédito em até 3x sem juros (R$ 200,00 no Ouro VIP ou R$ 160,00 no Sem Acomodação) ou em até 12x\n💰 Pagamento à vista no Pix\n📄 Boleto bancário",
   },
   {
+    category: "ingressos",
+    question: "Posso cancelar minha inscrição se houver algum imprevisto?",
+    answer:
+      "Sim. Seguimos o prazo garantido por lei para compras pela internet: você pode pedir o cancelamento com devolução total do valor em até 7 dias corridos após a compra. Se tiver qualquer dúvida, fale com nossa equipe no WhatsApp.",
+  },
+  {
+    category: "familia",
+    question: "Como chego ao local e há apoio para caravanas?",
+    answer:
+      "A Estância Árvore da Vida fica em Sumaré-SP, com acesso facilitado e estacionamento gratuito no local. Se você está organizando ou procurando uma caravana, chame nosso atendimento de caravanas pelo WhatsApp ((15) 99816-2393).",
+  },
+  {
+    category: "familia",
     question: "Quem pode participar?",
     answer:
-      "O EJM é feito para a juventude, mas é um espaço de braços abertos para a sua família! Qualquer pessoa que deseje viver essa experiência espiritual é bem-vinda.",
+      "O EJM é feito para a juventude, mas é um espaço de braços abertos para toda a família! Qualquer pessoa que deseje viver essa experiência espiritual é bem-vinda.",
   },
   {
+    category: "familia",
     question: "O que esperar do EJM 2027?",
     answer:
-      "Não é apenas um evento, é um divisor de águas. Momentos intensos de presença de Deus, comunhão com jovens de diversas regiões e experiências espirituais que vão marcar a sua história. O EJM é feito de irmãos para irmãos, sem fins lucrativos e com foco exclusivo em entrar na presença de Deus e se encher com o Espírito Santo.",
-  },
-  {
-    question: "Quais as formas de pagamento?",
-    answer:
-      "Para que ninguém fique de fora, você pode:\n\n💳 Parcelar no cartão de crédito direto pelo site\n💰 Pagamento à vista no Pix\n📄 Pagamento via Boleto",
-  },
-  {
-    question: "E se eu estiver em dúvida se vale a pena?",
-    answer:
-      "Se você sente que precisa de algo novo, de direção, de renovação espiritual… esse evento é pra você. Responda ao chamado. Diga: \"Eis-me aqui\". Muitos chegam com dúvidas… e saem com a vida transformada.",
-  },
-  {
-    question: "Como faço para garantir minha vaga?",
-    answer:
-      "Basta realizar sua inscrição pelo site oficial. As vagas nas camas são limitadas — quem compra primeiro, escolhe o quarto primeiro! Não deixe pra depois.",
+      "Não é apenas um evento, é um divisor de águas. Momentos intensos na presença de Deus, comunhão com jovens de diversas regiões e experiências espirituais marcantes. O EJM é feito de irmãos para irmãos, sem fins lucrativos e com foco exclusivo em se encher do Espírito Santo.",
   },
 ];
 
 const FAQSection = () => {
+  const [category, setCategory] = useState<FaqCategory>("tudo");
+
+  const visibleFaqs = useMemo(
+    () => (category === "tudo" ? faqs : faqs.filter((f) => f.category === category)),
+    [category]
+  );
+
   return (
-    <section className="bg-graphite section-padding">
-      <div className="max-w-3xl mx-auto">
+    <section id="faq" className="scroll-mt-20 bg-muted/50 section-padding">
+      <div className="mx-auto max-w-3xl">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-7 text-center md:mb-9"
         >
-          <span className="font-body text-xs tracking-[0.3em] uppercase text-primary mb-4 block">
+          <span className="mb-3 block font-body text-xs font-semibold uppercase tracking-[0.28em] text-primary-ink">
             Tire suas dúvidas
           </span>
-          <h2 className="font-display text-2xl md:text-3xl text-primary-foreground mb-4">
+          <h2 className="mb-3 font-display text-2xl text-foreground md:text-3xl">
             Perguntas Frequentes
           </h2>
-          <p className="font-body text-sm text-primary-foreground/60">
-            Tudo o que você precisa saber sobre o EJM 2027
+          <p className="font-body text-sm text-muted-foreground">
+            Tudo o que você precisa saber antes de garantir seu passaporte no 1º Lote
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="glass-card-dark px-4 sm:px-6 border-white/10 data-[state=open]:border-primary/30 transition-colors"
+        {/* Quick topic filters */}
+        <div role="group" aria-label="Filtrar dúvidas por assunto" className="mb-6 flex flex-wrap justify-center gap-2">
+          {FAQ_FILTERS.map((f) => {
+            const active = category === f.id;
+            return (
+              <button
+                key={f.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setCategory(f.id)}
+                className={`relative min-h-[44px] rounded-full border px-4 py-2 font-body text-xs font-semibold transition-colors sm:text-sm ${
+                  active
+                    ? "border-transparent text-primary-foreground"
+                    : "border-border bg-card text-foreground hover:border-primary/40 hover:text-primary-ink"
+                }`}
               >
-                <AccordionTrigger className="font-body text-sm md:text-base text-primary-foreground hover:text-primary transition-colors py-5 hover:no-underline">
+                {active && (
+                  <motion.span
+                    layoutId="faq-filter-pill"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    className="absolute inset-0 rounded-full gradient-bg"
+                    aria-hidden="true"
+                  />
+                )}
+                <span className="relative z-10">{f.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        <motion.div
+          key={category}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <Accordion
+            type="single"
+            collapsible
+            className="space-y-3"
+            onValueChange={(value) => {
+              if (!value) return;
+              const item = visibleFaqs.find((f) => f.question === value);
+              if (item) {
+                trackEvent("accordion_toggle", {
+                  scope: "faq",
+                  item_id: value,
+                  label: item.question,
+                  open: true,
+                });
+              }
+            }}
+          >
+            {visibleFaqs.map((faq) => (
+              <AccordionItem
+                key={faq.question}
+                value={faq.question}
+                className="rounded-2xl border border-border bg-card px-4 transition-colors data-[state=open]:border-primary/45 sm:px-6"
+                style={{ boxShadow: "var(--shadow-card)" }}
+              >
+                <AccordionTrigger className="py-4 text-left font-body text-sm font-semibold text-foreground transition-colors hover:text-primary-ink hover:no-underline md:py-5 md:text-base">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="font-body text-sm text-primary-foreground/70 leading-relaxed pb-5 whitespace-pre-line">
+                <AccordionContent className="whitespace-pre-line pb-5 font-body text-sm leading-relaxed text-muted-foreground">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -121,20 +200,22 @@ const FAQSection = () => {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-10"
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="mt-8 text-center"
         >
-          <a
-            href="https://eisme.com.br/evento/ejm2027"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block gradient-bg text-primary-foreground font-display text-xs md:text-sm px-8 py-3 rounded-full hover:scale-105 transition-transform"
+          <CheckoutLink
+            source="faq"
+            ticketId="geral"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-full gradient-bg px-8 py-3.5 font-body text-sm font-bold uppercase tracking-wide text-primary-foreground transition-transform hover:scale-[1.02] hover:opacity-95 active:scale-95"
           >
-            GARANTA SUA VAGA AGORA
-          </a>
+            Garanta sua vaga agora no 1º Lote
+          </CheckoutLink>
+          <p className="mt-3 font-body text-xs text-muted-foreground">
+            Site oficial de inscrição · Até 3x sem juros · Devolução garantida em 7 dias
+          </p>
         </motion.div>
       </div>
     </section>

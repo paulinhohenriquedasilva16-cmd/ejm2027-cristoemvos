@@ -1,33 +1,62 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
 import Index from "./pages/Index";
-import AccommodationDetail from "./pages/AccommodationDetail";
-import NotFound from "./pages/NotFound";
-import Privacy from "./pages/Privacy";
 import AdsTracking from "./components/AdsTracking";
 
-const queryClient = new QueryClient();
+const Store = lazy(() => import("./pages/Store"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const HashScrollHandler = () => {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const id = hash.slice(1);
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const scrollToTarget = () => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth" });
+        return true;
+      }
+      return false;
+    };
+    if (!scrollToTarget()) {
+      const timer = setTimeout(scrollToTarget, 250);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname, hash]);
+
+  return null;
+};
+
+const PageFallback = () => (
+  <div className="flex min-h-screen items-center justify-center bg-background font-body text-sm text-muted-foreground">
+    Carregando...
+  </div>
+);
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AdsTracking />
+  <MotionConfig reducedMotion="user">
+    <BrowserRouter>
+      <HashScrollHandler />
+      <AdsTracking />
+      <Suspense fallback={<PageFallback />}>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/acomodacao/:slug" element={<AccommodationDetail />} />
+          <Route path="/loja" element={<Store />} />
+          <Route path="/acomodacao/:slug" element={<Navigate to="/#acomodacoes" replace />} />
           <Route path="/privacidade" element={<Privacy />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+      </Suspense>
+    </BrowserRouter>
+  </MotionConfig>
 );
 
 export default App;

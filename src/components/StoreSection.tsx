@@ -1,169 +1,166 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { z } from "zod";
-import { Copy, Check, ShoppingBag, Minus, Plus } from "lucide-react";
-import camiseta from "@/assets/camiseta-ejm.jpg.asset.json";
+import { ArrowRight, ShoppingBag } from "lucide-react";
 import lojaBg from "@/assets/loja-bg.jpg";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { STORE_PRODUCTS, type StoreProduct } from "@/data/storeProducts";
+import { trackEvent } from "@/lib/analytics";
 
-const PRICE = 70;
-const SIZES = ["PP", "P", "M", "G", "GG", "XG"];
-const PIX_KEY = "177.965.118.09";
-const PIX_NAME = "Pedro Vitorino";
-const WHATSAPP = "5515996183439";
-
-const shirtSchema = z.object({
-  name: z.string().trim().min(2, "Informe seu nome").max(100),
-  size: z.enum(SIZES as [string, ...string[]], { errorMap: () => ({ message: "Escolha o tamanho" }) }),
-  qty: z.number().int().min(1).max(50),
-});
-
-const openWhats = (msg: string) =>
-  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank", "noopener,noreferrer");
+const StoreReservationDialog = lazy(() => import("@/components/StoreReservationDialog"));
 
 const StoreSection = () => {
+  const featuredProduct = STORE_PRODUCTS[0];
+  const [selectedSize, setSelectedSize] = useState<string>(featuredProduct.sizes[2] ?? "M");
+  const [selectedProduct, setSelectedProduct] = useState<StoreProduct | null>(null);
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [size, setSize] = useState("");
-  const [qty, setQty] = useState(1);
-  const [error, setError] = useState("");
-  const [step, setStep] = useState<"form" | "pix">("form");
-  const [copied, setCopied] = useState(false);
 
-  const total = (PRICE * qty).toFixed(2).replace(".", ",");
+  const [priceInt, priceCents] = featuredProduct.price.toFixed(2).split(".");
 
-  const start = () => {
-    setStep("form");
-    setError("");
-    setCopied(false);
+  const handleOpenReserve = (product: StoreProduct) => {
+    setSelectedProduct(product);
     setOpen(true);
-  };
-
-  const reset = (o: boolean) => {
-    setOpen(o);
-    if (!o) { setStep("form"); setError(""); setCopied(false); }
-  };
-
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const r = shirtSchema.safeParse({ name, size, qty });
-    if (!r.success) { setError(r.error.issues[0].message); return; }
-    setError("");
-    const msg = `Olá! Meu nome é ${r.data.name}. Quero reservar ${r.data.qty} camisa(s) do EJM no tamanho ${r.data.size}. Total: R$ ${total}.`;
-    openWhats(msg);
-    setStep("pix");
-  };
-
-  const copyPix = async () => {
-    await navigator.clipboard.writeText(PIX_KEY);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    trackEvent("store_modal_open", {
+      product_id: product.id,
+      product_name: product.name,
+      value: product.price,
+    });
   };
 
   return (
-    <section id="loja" className="relative overflow-hidden section-padding">
-      <img src={lojaBg} alt="" aria-hidden className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
-      <div aria-hidden className="absolute inset-0 bg-foreground/60" />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/35 to-foreground/75" />
-      <div aria-hidden className="absolute inset-0 gradient-bg opacity-15 mix-blend-multiply" />
-      <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-transparent to-foreground/85" />
-      <div className="relative max-w-5xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }} className="text-center mb-10 md:mb-14">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 px-4 py-1.5 font-body text-[11px] uppercase tracking-[0.25em] text-primary mb-4">
-            <ShoppingBag className="w-3.5 h-3.5" /> Produto oficial
+    <section id="loja" className="relative scroll-mt-20 overflow-hidden section-padding">
+      <img
+        src={lojaBg}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-graphite/80" />
+      <div aria-hidden="true" className="absolute inset-0 gradient-bg opacity-15 mix-blend-multiply" />
+      <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-graphite/75 via-transparent to-graphite/90" />
+
+      <div className="relative mx-auto max-w-5xl">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-10 text-center md:mb-14"
+        >
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-orange-400/40 bg-graphite/60 px-4 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-orange-300">
+            <ShoppingBag className="h-3.5 w-3.5" aria-hidden="true" />
+            Loja Oficial · EJM 2027
           </span>
-          <h2 className="font-display text-3xl md:text-5xl text-background mb-3">
-            Loja <span className="gradient-text">EJM</span>
+          <h2 className="mb-3 font-display text-2xl text-white md:text-4xl">
+            Vista a Mensagem do <span className="gradient-text-dark">EJM 2027</span>
           </h2>
-          <p className="font-body text-background/70 max-w-md mx-auto">Leve a mensagem de Efésios 5:18 com você, antes, durante e depois do encontro.</p>
+          <p className="mx-auto max-w-md font-body text-sm text-white/85 sm:text-base">
+            Já garantiu seu passaporte? Escolha seu tamanho e reserve a Camiseta Oficial Efésios 5:18 com retirada no evento sem frete.
+          </p>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
-          className="group max-w-sm mx-auto flex flex-col rounded-3xl border border-background/20 bg-background/10 backdrop-blur-xl p-3 sm:p-4 shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:border-primary/70">
-          <div className="relative aspect-square rounded-2xl overflow-hidden bg-background/10">
-            <img src={camiseta.url} alt="Camiseta oficial EJM 2027 - frente e costas" loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
-            <span className="absolute top-3 left-3 gradient-bg text-primary-foreground text-[10px] sm:text-xs font-body font-bold uppercase tracking-wider px-3 py-1 rounded-full">Camiseta</span>
-            <span className="absolute bottom-3 left-3 font-body text-[11px] uppercase tracking-[0.2em] text-background/90">Efésios 5:18</span>
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="group mx-auto flex max-w-sm flex-col rounded-3xl border border-white/20 bg-white/10 p-3 shadow-2xl transition-transform duration-300 hover:-translate-y-1 hover:border-primary/70 sm:p-4 md:backdrop-blur-xl"
+        >
+          <div className="relative aspect-square overflow-hidden rounded-2xl bg-white">
+            <img
+              src={featuredProduct.image}
+              alt={featuredProduct.imageAlt}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-contain p-2 transition-transform duration-700 group-hover:scale-105"
+            />
+            <span className="absolute left-3 top-3 rounded-full gradient-bg px-3 py-1 font-body text-[11px] font-bold uppercase tracking-wider text-primary-foreground shadow">
+              {featuredProduct.badge}
+            </span>
           </div>
-          <div className="flex flex-col flex-1 px-2 pt-5 pb-2">
-            <h3 className="font-display text-lg sm:text-xl text-background mb-2">Camiseta Oficial EJM 2027</h3>
-            <p className="font-body text-sm text-background/65 mb-5">Camiseta preta com estampa na frente e nas costas.</p>
-            <div className="mt-auto flex items-end justify-between gap-3 border-t border-background/20 pt-4">
-              <div className="min-h-[3.5rem] flex flex-col justify-end">
-                <div className="flex items-baseline gap-1">
-                  <span className="font-body text-lg text-background/80">R$</span>
-                  <span className="font-display text-4xl text-background">70<span className="text-xl text-background/60">,00</span></span>
-                </div>
-                <span className="font-body text-[11px] uppercase tracking-wider text-background/50">reserva + Pix</span>
+
+          <div className="flex flex-1 flex-col px-2 pb-2 pt-5">
+            <h3 className="mb-2 font-display text-lg text-white sm:text-xl">
+              {featuredProduct.name}
+            </h3>
+            <p className="mb-4 font-body text-sm leading-relaxed text-white/80">
+              {featuredProduct.shortDescription}
+            </p>
+
+            {/* Quick size selection */}
+            <div className="mb-5">
+              <p className="mb-2 font-body text-xs font-semibold uppercase tracking-wider text-white/80">
+                Tamanho selecionado: <strong className="text-orange-300">{selectedSize}</strong>
+              </p>
+              <div role="group" aria-label="Escolher tamanho da camiseta" className="flex flex-wrap gap-1.5">
+                {featuredProduct.sizes.map((size) => {
+                  const active = selectedSize === size;
+                  return (
+                    <button
+                      key={size}
+                      type="button"
+                      aria-pressed={active}
+                      onClick={() => setSelectedSize(size)}
+                      className={`min-h-[40px] min-w-[40px] rounded-xl border px-2.5 font-body text-xs font-bold transition-colors active:scale-95 ${
+                        active
+                          ? "border-transparent gradient-bg text-primary-foreground"
+                          : "border-white/25 bg-black/30 text-white hover:bg-white/15"
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  );
+                })}
               </div>
-              <button onClick={start} className="shrink-0 inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-body font-bold px-5 py-3 min-h-[44px] rounded-full hover:opacity-90 transition-opacity">
-                <ShoppingBag className="w-4 h-4" /> Comprar
+            </div>
+
+            <div className="mt-auto flex items-end justify-between gap-3 border-t border-white/20 pt-4">
+              <div className="flex min-h-[3.5rem] flex-col justify-end">
+                <div className="flex items-baseline gap-1">
+                  <span className="font-body text-lg text-white/85">R$</span>
+                  <span className="font-display text-4xl text-white">
+                    {priceInt}
+                    <span className="text-xl text-white/75">,{priceCents}</span>
+                  </span>
+                </div>
+                <span className="font-body text-[11px] uppercase tracking-wider text-white/75">
+                  Reserva + Pix sem taxa
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleOpenReserve(featuredProduct)}
+                className="inline-flex min-h-[44px] shrink-0 items-center justify-center gap-2 rounded-full gradient-bg px-5 py-3 font-body text-sm font-bold text-primary-foreground transition-opacity hover:opacity-95 active:scale-95"
+              >
+                <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+                Reservar
               </button>
             </div>
           </div>
         </motion.div>
+
+        <div className="mt-8 text-center">
+          <Link
+            to="/loja"
+            className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-2.5 font-body text-sm font-semibold text-white transition-colors hover:bg-white/20"
+          >
+            <span>Abrir página da Loja Oficial</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </div>
       </div>
 
-      <Dialog open={open} onOpenChange={reset}>
-        <DialogContent className="max-w-md">
-          {step === "form" ? (
-            <>
-              <DialogHeader>
-                <DialogTitle className="font-display text-lg">Reservar camiseta</DialogTitle>
-                <DialogDescription>Preencha os dados e envie sua reserva pelo WhatsApp.</DialogDescription>
-              </DialogHeader>
-              <form onSubmit={submit} className="space-y-5 font-body">
-                <div>
-                  <label className="text-sm font-medium text-foreground block mb-1.5">Seu nome</label>
-                  <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100}
-                    className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" placeholder="Nome completo" />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground block mb-1.5">Tamanho</label>
-                  <div className="grid grid-cols-6 gap-2">
-                    {SIZES.map((s) => (
-                      <button type="button" key={s} onClick={() => setSize(s)}
-                        className={`rounded-lg border py-2 text-sm font-semibold transition-colors ${size === s ? "gradient-bg text-primary-foreground border-transparent" : "border-input text-foreground hover:border-primary"}`}>{s}</button>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-foreground block mb-1.5">Quantidade</label>
-                  <div className="flex items-center gap-3">
-                    <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-10 h-10 rounded-full border border-input flex items-center justify-center hover:border-primary"><Minus className="w-4 h-4" /></button>
-                    <span className="font-display text-xl w-8 text-center">{qty}</span>
-                    <button type="button" onClick={() => setQty((q) => Math.min(50, q + 1))} className="w-10 h-10 rounded-full border border-input flex items-center justify-center hover:border-primary"><Plus className="w-4 h-4" /></button>
-                    <span className="ml-auto text-sm text-muted-foreground">Total: <strong className="text-foreground">R$ {total}</strong></span>
-                  </div>
-                </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
-                <button type="submit" className="w-full gradient-bg text-primary-foreground font-bold py-3.5 rounded-full hover:opacity-90">
-                  Enviar reserva pelo WhatsApp
-                </button>
-              </form>
-            </>
-          ) : (
-            <>
-              <DialogHeader>
-                <DialogTitle className="font-display text-lg">Pagamento via Pix</DialogTitle>
-                <DialogDescription>Faça o Pix de <strong>R$ {total}</strong> e envie o comprovante no WhatsApp.</DialogDescription>
-              </DialogHeader>
-              <div className="font-body space-y-4">
-                <div className="rounded-2xl border-2 border-primary/30 bg-muted p-4 text-center">
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">Chave Pix (CPF)</p>
-                  <p className="font-display text-lg text-foreground mb-1">{PIX_KEY}</p>
-                  <p className="text-sm text-muted-foreground">{PIX_NAME}</p>
-                </div>
-                <button onClick={copyPix} className="w-full inline-flex items-center justify-center gap-2 gradient-bg text-primary-foreground font-bold py-3.5 rounded-full hover:opacity-90">
-                  {copied ? <><Check className="w-4 h-4" /> Copiado!</> : <><Copy className="w-4 h-4" /> Copiar chave Pix</>}
-                </button>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      {open && (
+        <Suspense fallback={null}>
+          <StoreReservationDialog
+            product={selectedProduct}
+            initialSize={selectedSize}
+            open={open}
+            onOpenChange={setOpen}
+          />
+        </Suspense>
+      )}
     </section>
   );
 };
